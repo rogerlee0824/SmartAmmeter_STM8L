@@ -5,6 +5,7 @@ void LED_Init(void)
 {
 	GPIO_Init(GPIO_PORT_LED1, GPIO_PIN_LED1, GPIO_Mode_Out_PP_Low_Fast);
 	GPIO_Init(GPIO_PORT_LED3, GPIO_PIN_LED3, GPIO_Mode_Out_PP_Low_Fast);
+	//GPIO_Init(GPIO_PORT_COUNT_VCC, GPIO_PIN_COUNT_VCC, GPIO_Mode_Out_PP_Low_Fast);
 }
 
 void LED1_ON(void)

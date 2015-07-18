@@ -83,7 +83,7 @@
         </option>
         <option>
           <name>GenStackSize</name>
-          <state>0x100</state>
+          <state>0x200</state>
         </option>
         <option>
           <name>GenHeapSize</name>
@@ -259,9 +259,9 @@
         </option>
         <option>
           <name>CCIncludePath2</name>
-          <state>$PROJ_DIR$\..\usr\inc</state>
-          <state>$PROJ_DIR$\..\lib\inc</state>
-          <state>$PROJ_DIR$\..\os</state>
+          <state>$PROJ_DIR$\usr\inc</state>
+          <state>$PROJ_DIR$\lib\inc</state>
+          <state>$PROJ_DIR$\os</state>
         </option>
         <option>
           <name>CCStdIncCheck</name>
@@ -801,118 +801,121 @@
   <group>
     <name>OS</name>
     <file>
-      <name>$PROJ_DIR$\..\os\app_scheduler.c</name>
+      <name>$PROJ_DIR$\os\app_scheduler.c</name>
     </file>
   </group>
   <group>
     <name>STM8L15x_StdPeriph_Driver</name>
     <file>
-      <name>$PROJ_DIR$\..\lib\src\stm8l15x_adc.c</name>
+      <name>$PROJ_DIR$\lib\src\stm8l15x_adc.c</name>
     </file>
     <file>
-      <name>$PROJ_DIR$\..\lib\src\stm8l15x_aes.c</name>
+      <name>$PROJ_DIR$\lib\src\stm8l15x_aes.c</name>
     </file>
     <file>
-      <name>$PROJ_DIR$\..\lib\src\stm8l15x_beep.c</name>
+      <name>$PROJ_DIR$\lib\src\stm8l15x_beep.c</name>
     </file>
     <file>
-      <name>$PROJ_DIR$\..\lib\src\stm8l15x_clk.c</name>
+      <name>$PROJ_DIR$\lib\src\stm8l15x_clk.c</name>
     </file>
     <file>
-      <name>$PROJ_DIR$\..\lib\src\stm8l15x_comp.c</name>
+      <name>$PROJ_DIR$\lib\src\stm8l15x_comp.c</name>
     </file>
     <file>
-      <name>$PROJ_DIR$\..\lib\src\stm8l15x_dac.c</name>
+      <name>$PROJ_DIR$\lib\src\stm8l15x_dac.c</name>
     </file>
     <file>
-      <name>$PROJ_DIR$\..\lib\src\stm8l15x_dma.c</name>
+      <name>$PROJ_DIR$\lib\src\stm8l15x_dma.c</name>
     </file>
     <file>
-      <name>$PROJ_DIR$\..\lib\src\stm8l15x_exti.c</name>
+      <name>$PROJ_DIR$\lib\src\stm8l15x_exti.c</name>
     </file>
     <file>
-      <name>$PROJ_DIR$\..\lib\src\stm8l15x_flash.c</name>
+      <name>$PROJ_DIR$\lib\src\stm8l15x_flash.c</name>
     </file>
     <file>
-      <name>$PROJ_DIR$\..\lib\src\stm8l15x_gpio.c</name>
+      <name>$PROJ_DIR$\lib\src\stm8l15x_gpio.c</name>
     </file>
     <file>
-      <name>$PROJ_DIR$\..\lib\src\stm8l15x_i2c.c</name>
+      <name>$PROJ_DIR$\lib\src\stm8l15x_i2c.c</name>
     </file>
     <file>
-      <name>$PROJ_DIR$\..\lib\src\stm8l15x_irtim.c</name>
+      <name>$PROJ_DIR$\lib\src\stm8l15x_irtim.c</name>
     </file>
     <file>
-      <name>$PROJ_DIR$\..\lib\src\stm8l15x_itc.c</name>
+      <name>$PROJ_DIR$\lib\src\stm8l15x_itc.c</name>
     </file>
     <file>
-      <name>$PROJ_DIR$\..\lib\src\stm8l15x_iwdg.c</name>
+      <name>$PROJ_DIR$\lib\src\stm8l15x_iwdg.c</name>
     </file>
     <file>
-      <name>$PROJ_DIR$\..\lib\src\stm8l15x_lcd.c</name>
+      <name>$PROJ_DIR$\lib\src\stm8l15x_lcd.c</name>
     </file>
     <file>
-      <name>$PROJ_DIR$\..\lib\src\stm8l15x_pwr.c</name>
+      <name>$PROJ_DIR$\lib\src\stm8l15x_pwr.c</name>
     </file>
     <file>
-      <name>$PROJ_DIR$\..\lib\src\stm8l15x_rst.c</name>
+      <name>$PROJ_DIR$\lib\src\stm8l15x_rst.c</name>
     </file>
     <file>
-      <name>$PROJ_DIR$\..\lib\src\stm8l15x_rtc.c</name>
+      <name>$PROJ_DIR$\lib\src\stm8l15x_rtc.c</name>
     </file>
     <file>
-      <name>$PROJ_DIR$\..\lib\src\stm8l15x_spi.c</name>
+      <name>$PROJ_DIR$\lib\src\stm8l15x_spi.c</name>
     </file>
     <file>
-      <name>$PROJ_DIR$\..\lib\src\stm8l15x_syscfg.c</name>
+      <name>$PROJ_DIR$\lib\src\stm8l15x_syscfg.c</name>
     </file>
     <file>
-      <name>$PROJ_DIR$\..\lib\src\stm8l15x_tim1.c</name>
+      <name>$PROJ_DIR$\lib\src\stm8l15x_tim1.c</name>
     </file>
     <file>
-      <name>$PROJ_DIR$\..\lib\src\stm8l15x_tim2.c</name>
+      <name>$PROJ_DIR$\lib\src\stm8l15x_tim2.c</name>
     </file>
     <file>
-      <name>$PROJ_DIR$\..\lib\src\stm8l15x_tim3.c</name>
+      <name>$PROJ_DIR$\lib\src\stm8l15x_tim3.c</name>
     </file>
     <file>
-      <name>$PROJ_DIR$\..\lib\src\stm8l15x_tim4.c</name>
+      <name>$PROJ_DIR$\lib\src\stm8l15x_tim4.c</name>
     </file>
     <file>
-      <name>$PROJ_DIR$\..\lib\src\stm8l15x_tim5.c</name>
+      <name>$PROJ_DIR$\lib\src\stm8l15x_tim5.c</name>
     </file>
     <file>
-      <name>$PROJ_DIR$\..\lib\src\stm8l15x_usart.c</name>
+      <name>$PROJ_DIR$\lib\src\stm8l15x_usart.c</name>
     </file>
     <file>
-      <name>$PROJ_DIR$\..\lib\src\stm8l15x_wfe.c</name>
+      <name>$PROJ_DIR$\lib\src\stm8l15x_wfe.c</name>
     </file>
     <file>
-      <name>$PROJ_DIR$\..\lib\src\stm8l15x_wwdg.c</name>
+      <name>$PROJ_DIR$\lib\src\stm8l15x_wwdg.c</name>
     </file>
   </group>
   <group>
     <name>Usr</name>
     <file>
-      <name>$PROJ_DIR$\..\usr\src\app_trace.c</name>
+      <name>$PROJ_DIR$\usr\src\app_trace.c</name>
     </file>
     <file>
-      <name>$PROJ_DIR$\..\usr\src\delay.c</name>
+      <name>$PROJ_DIR$\usr\src\count.c</name>
     </file>
     <file>
-      <name>$PROJ_DIR$\..\usr\inc\includes.h</name>
+      <name>$PROJ_DIR$\usr\src\delay.c</name>
     </file>
     <file>
-      <name>$PROJ_DIR$\..\usr\src\key.c</name>
+      <name>$PROJ_DIR$\usr\inc\includes.h</name>
     </file>
     <file>
-      <name>$PROJ_DIR$\..\usr\src\led.c</name>
+      <name>$PROJ_DIR$\usr\src\key.c</name>
     </file>
     <file>
-      <name>$PROJ_DIR$\..\usr\src\main.c</name>
+      <name>$PROJ_DIR$\usr\src\led.c</name>
     </file>
     <file>
-      <name>$PROJ_DIR$\..\usr\src\stm8l15x_it.c</name>
+      <name>$PROJ_DIR$\usr\src\main.c</name>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\usr\src\stm8l15x_it.c</name>
     </file>
   </group>
 </project>

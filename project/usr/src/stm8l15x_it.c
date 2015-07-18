@@ -30,6 +30,7 @@
 #include "stm8l15x_it.h"
 #include <stdio.h>
 #include "includes.h"
+#include "stm8l15x_exti.h"
 
 /** @addtogroup STM8L15x_StdPeriph_Template
   * @{
@@ -183,9 +184,14 @@ INTERRUPT_HANDLER(EXTI1_IRQHandler,9)
   */
 INTERRUPT_HANDLER(EXTI2_IRQHandler,10)
 {
-    /* In order to detect unexpected events during development,
-       it is recommended to set a breakpoint on the following instruction.
-    */
+	if(GPIO_ReadInputDataBit(GPIO_PORT_COUNT_A, GPIO_PIN_COUNT_A) == RESET)
+	{
+		/* Cleat Interrupt pending bit */
+  		EXTI_ClearITPendingBit(EXTI_IT_PIN_COUNT_A);
+		
+		count_event.eCount_event = COUNT_A_INT;
+		app_sched_event_put(&count_event,sizeof(count_event),count_event_handler);
+	}
 }
 
 /**
@@ -195,9 +201,14 @@ INTERRUPT_HANDLER(EXTI2_IRQHandler,10)
   */
 INTERRUPT_HANDLER(EXTI3_IRQHandler,11)
 {
-    /* In order to detect unexpected events during development,
-       it is recommended to set a breakpoint on the following instruction.
-    */
+	if(GPIO_ReadInputDataBit(GPIO_PORT_COUNT_B, GPIO_PIN_COUNT_B) == RESET)
+	{
+		/* Cleat Interrupt pending bit */
+  		EXTI_ClearITPendingBit(EXTI_IT_PIN_COUNT_B);
+
+		count_event.eCount_event = COUNT_B_INT;
+		app_sched_event_put(&count_event,sizeof(count_event),count_event_handler);
+	}
 }
 
 /**
@@ -244,14 +255,14 @@ INTERRUPT_HANDLER(EXTI6_IRQHandler,14)
   */
 INTERRUPT_HANDLER(EXTI7_IRQHandler,15)
 {
-    /* In order to detect unexpected events during development,
-       it is recommended to set a breakpoint on the following instruction.
-    */
 	if(GPIO_ReadInputDataBit(GPIO_PORT_KEY, GPIO_Pin_7) == RESET)
 	{
-		printf("EXTI7_IRQHandler!!!\r\n");
 		/* Cleat Interrupt pending bit */
   		EXTI_ClearITPendingBit(EXTI_IT_PIN_KEY);
+		
+		printf("EXTI7_IRQHandler!!!\r\n");
+		key_event.eKey_event = KEY_HANDLE;
+		app_sched_event_put(&key_event,sizeof(key_event),key_event_handler);
 	}
 }
 /**

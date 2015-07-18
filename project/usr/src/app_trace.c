@@ -14,12 +14,22 @@ void app_trace_init(void)
 	/* Enables USART3 clock. */
 	CLK_PeripheralClockConfig(CLK_Peripheral_USART3, ENABLE);
 	GPIO_ExternalPullUpConfig(GPIO_PORT_USART_TX, GPIO_PIN_USART_TX, ENABLE);
+	
+#ifndef COUNT_TEST	
 	USART_Init(APP_TRACE_USART, 
 			   115200, 
 			   USART_WordLength_8b, 
 			   USART_StopBits_1,
                USART_Parity_No,  
 			   USART_Mode_Tx);
+#else
+	USART_Init(APP_TRACE_USART, 
+			   2400, 
+			   USART_WordLength_8b, 
+			   USART_StopBits_1,
+               USART_Parity_No,  
+			   USART_Mode_Tx);
+#endif
 }
 
 int putchar(int ch)
@@ -32,4 +42,18 @@ int putchar(int ch)
 		time_out--;
 	}
 	return (ch);
+}
+
+void UartSendMultiBytes(uint8_t * pbuf,uint16_t len)
+{
+	uint16_t time_out = 10000;
+	
+	for(uint16_t i = 0;i < len;i ++)
+	{
+		USART_SendData8(APP_TRACE_USART, (uint8_t)*(pbuf + i));
+		while((USART_GetFlagStatus(APP_TRACE_USART, USART_FLAG_TC) == RESET) && (time_out != 0))
+		{
+			time_out--;
+		}
+	}
 }

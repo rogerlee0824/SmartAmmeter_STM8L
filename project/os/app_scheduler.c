@@ -14,9 +14,18 @@
 #include "stm8l15x.h"
 #include <stdlib.h>
 #include <string.h>
+#include <stdio.h>
 #include "os_util.h"
 
-#define SCHED_MAX_EVENT_DATA_SIZE       4                   /**< Maximum size of scheduler events. Note that scheduler BLE stack events do not contain any data, as the events are being pulled from the stack in the event handler. */
+#define SCHED_DEBUG
+	 
+#ifdef SCHED_DEBUG
+	#define SCHED_LOG 		printf
+#else
+	#define SCHED_LOG(...)
+#endif	 
+	 
+#define SCHED_MAX_EVENT_DATA_SIZE       12                   /**< Maximum size of scheduler events. Note that scheduler BLE stack events do not contain any data, as the events are being pulled from the stack in the event handler. */
 #define SCHED_QUEUE_SIZE                20                                          /**< Maximum number of events in the scheduler queue. */
 
 
@@ -160,11 +169,13 @@ uint32_t app_sched_event_put(void *                    p_event_data,
         }
         else
         {
+			SCHED_LOG("*****OS_ERROR_NO_MEM*****\r\n");
             err_code = OS_ERROR_NO_MEM;
         }
     }
     else
     {
+		SCHED_LOG("*****OS_ERROR_NO_MEM*****\r\n");
         err_code = OS_ERROR_INVALID_LENGTH;
     }
 

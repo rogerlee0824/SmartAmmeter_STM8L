@@ -56,9 +56,13 @@ void main(void)
 	app_trace_init();
 	printf("Hello!!!\r\n");
 	LED_Init();
-	KEY_Init();
-	
 	scheduler_init();
+
+	count_event.eCount_event = COUNT_INIT;
+	app_sched_event_put(&count_event,sizeof(count_event),count_event_handler);
+	
+	//key_event.eKey_event = KEY_INIT;
+	//app_sched_event_put(&key_event,sizeof(key_event),key_event_handler);
 	
 	/* enable interrupts */
 	enableInterrupts();
