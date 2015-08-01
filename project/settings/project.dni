@@ -9,11 +9,13 @@ TriggerName=main
 LimitSize=0
 ByteLimit=50
 [DebugChecksum]
-Checksum=-409771784
+Checksum=763637079
 [CallStack]
 ShowArgs=0
 [Disassembly]
 MixedMode=1
+[watch_formats]
+Fmt0={W}1:AmmeterCount	4	0
 [DataSample]
 LogEnabled=0
 GraphEnabled=0

@@ -23,6 +23,7 @@ extern count_event_t count_event;
 
 void count_init(void);
 void do_count(void);
+void ConvertHEX_to_BCD(uint32_t u32Source, uint8_t * pu8DstArrar);
 void count_event_handler(void * p_event_data, uint16_t event_size);
 
 #ifdef COUNT_TEST

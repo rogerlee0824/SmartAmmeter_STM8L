@@ -8,12 +8,14 @@
 #include "led.h"
 #include "key.h"
 #include "count.h"
+#include "valve.h"
 #include "app_scheduler.h"
 
 /* Define debug function -------------------------------------------------------*/
 #define KEY_DEBUG
 #define COUNT_DEBUG
-#define COUNT_TEST
+//#define COUNT_TEST
+#define VALVE_DEBUG
 
 #define STM8L_SUCCESS                           (0)  // Successful command
 #define STM8L_FAIL                           	(1)  // Fail command
@@ -50,6 +52,14 @@
 #define EXTI_PIN_COUNT_B 						EXTI_Pin_3
 #define EXTI_Trigger_COUNT_B 					EXTI_Trigger_Rising
 #define EXTI_IT_PIN_COUNT_B						EXTI_IT_Pin3
+
+/* Define MOTOR pins ------------------------------------------------------------*/
+#define GPIO_PORT_VALVE_IA  					GPIOG
+#define GPIO_PIN_VALVE_IA  						GPIO_Pin_3
+#define GPIO_PORT_VALVE_IB  					GPIOG
+#define GPIO_PIN_VALVE_IB  						GPIO_Pin_2
+#define GPIO_PORT_VALVE_MONITOR  				GPIOD
+#define GPIO_PIN_VALVE_MONITOR  				GPIO_Pin_5
 
 /* Exported constants --------------------------------------------------------*/
 /* Uncomment the line below to expanse the "assert_param" macro in the 

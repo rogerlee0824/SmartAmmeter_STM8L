@@ -56,13 +56,20 @@ void main(void)
 	app_trace_init();
 	printf("Hello!!!\r\n");
 	LED_Init();
+    LED1_ON();
 	scheduler_init();
-
+	
+	/* Build count init event */
 	count_event.eCount_event = COUNT_INIT;
 	app_sched_event_put(&count_event,sizeof(count_event),count_event_handler);
 	
-	//key_event.eKey_event = KEY_INIT;
-	//app_sched_event_put(&key_event,sizeof(key_event),key_event_handler);
+	/* Build key init event */
+	key_event.eKey_event = KEY_INIT;
+	app_sched_event_put(&key_event,sizeof(key_event),key_event_handler);
+	
+	/* Build key init event */
+	valve_event.eValve_event = VALVE_OPEN_EVENT;
+	app_sched_event_put(&valve_event,sizeof(valve_event),valve_event_handler);
 	
 	/* enable interrupts */
 	enableInterrupts();
