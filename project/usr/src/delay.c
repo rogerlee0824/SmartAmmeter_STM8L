@@ -1,5 +1,13 @@
 #include "delay.h"
 
+void delay1us(uint16_t num)
+{
+    for (uint16_t j = 0;j < num;j ++)
+	{
+        nop();
+	}
+}
+
 void delay1ms(uint16_t ms)
 {
 	for(uint16_t j = 0;j < ms;j ++)

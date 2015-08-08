@@ -262,6 +262,7 @@
           <state>$PROJ_DIR$\usr\inc</state>
           <state>$PROJ_DIR$\lib\inc</state>
           <state>$PROJ_DIR$\os</state>
+          <state>$PROJ_DIR$\driver\inc</state>
         </option>
         <option>
           <name>CCStdIncCheck</name>
@@ -799,6 +800,12 @@
     </settings>
   </configuration>
   <group>
+    <name>driver</name>
+    <file>
+      <name>$PROJ_DIR$\driver\src\at88sc102.c</name>
+    </file>
+  </group>
+  <group>
     <name>OS</name>
     <file>
       <name>$PROJ_DIR$\os\app_scheduler.c</name>
@@ -897,16 +904,37 @@
       <name>$PROJ_DIR$\usr\src\app_trace.c</name>
     </file>
     <file>
+      <name>$PROJ_DIR$\usr\src\cc112x.c</name>
+      <excluded>
+        <configuration>STM8L15X_HD(STM8L15xx8_16xx8)</configuration>
+      </excluded>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\usr\src\cc112x_spi.c</name>
+    </file>
+    <file>
       <name>$PROJ_DIR$\usr\src\count.c</name>
     </file>
     <file>
       <name>$PROJ_DIR$\usr\src\delay.c</name>
     </file>
     <file>
+      <name>$PROJ_DIR$\usr\src\hal_spi_rf_trxeb.c</name>
+      <excluded>
+        <configuration>STM8L15X_HD(STM8L15xx8_16xx8)</configuration>
+      </excluded>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\usr\src\ic.c</name>
+    </file>
+    <file>
       <name>$PROJ_DIR$\usr\inc\includes.h</name>
     </file>
     <file>
       <name>$PROJ_DIR$\usr\src\key.c</name>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\usr\src\lcd_sc.c</name>
     </file>
     <file>
       <name>$PROJ_DIR$\usr\src\led.c</name>

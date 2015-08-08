@@ -67,13 +67,17 @@ void main(void)
 	key_event.eKey_event = KEY_INIT;
 	app_sched_event_put(&key_event,sizeof(key_event),key_event_handler);
 	
-	/* Build key init event */
-	valve_event.eValve_event = VALVE_OPEN_EVENT;
+	/* Build the valve standby event */
+	valve_event.eValve_event = VALVE_STANDBY_EVENT;
 	app_sched_event_put(&valve_event,sizeof(valve_event),valve_event_handler);
+    
+    /* Build the LCD Init event */
+	lcd_event.eLcd_event = LCD_INIT;
+	app_sched_event_put(&lcd_event,sizeof(lcd_event),lcd_event_handler);
 	
 	/* enable interrupts */
 	enableInterrupts();
-	
+
 	/* Infinite loop */
   	while (1)
   	{

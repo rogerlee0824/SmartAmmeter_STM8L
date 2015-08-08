@@ -184,14 +184,18 @@ INTERRUPT_HANDLER(EXTI1_IRQHandler,9)
   */
 INTERRUPT_HANDLER(EXTI2_IRQHandler,10)
 {
-	if(GPIO_ReadInputDataBit(GPIO_PORT_COUNT_A, GPIO_PIN_COUNT_A) == RESET)
-	{
-		/* Cleat Interrupt pending bit */
-  		EXTI_ClearITPendingBit(EXTI_IT_PIN_COUNT_A);
-		
-		count_event.eCount_event = COUNT_A_INT;
-		app_sched_event_put(&count_event,sizeof(count_event),count_event_handler);
-	}
+    if(EXTI_GetITStatus(EXTI_IT_Pin2))
+    {
+        /* Cleat Interrupt pending bit */
+  		EXTI_ClearITPendingBit(EXTI_IT_Pin2);
+        
+        /* Check if the interrupt is from the COUNT_A pin or not */
+        if(GPIO_ReadInputDataBit(GPIO_PORT_COUNT_A, GPIO_PIN_COUNT_A) == RESET)
+        {
+            count_event.eCount_event = COUNT_A_INT;
+            app_sched_event_put(&count_event,sizeof(count_event),count_event_handler);
+        }
+    }
 }
 
 /**
@@ -255,15 +259,33 @@ INTERRUPT_HANDLER(EXTI6_IRQHandler,14)
   */
 INTERRUPT_HANDLER(EXTI7_IRQHandler,15)
 {
-	if(GPIO_ReadInputDataBit(GPIO_PORT_KEY, GPIO_Pin_7) == RESET)
-	{
-		/* Cleat Interrupt pending bit */
-  		EXTI_ClearITPendingBit(EXTI_IT_PIN_KEY);
-		
-		printf("EXTI7_IRQHandler!!!\r\n");
-		key_event.eKey_event = KEY_HANDLE;
-		app_sched_event_put(&key_event,sizeof(key_event),key_event_handler);
-	}
+    if(EXTI_GetITStatus(EXTI_IT_Pin7))
+    {
+        /* Cleat Interrupt pending bit */
+  		EXTI_ClearITPendingBit(EXTI_IT_Pin7);
+        
+        /* Check if the key is pressed or not */
+        if(GPIO_ReadInputDataBit(GPIO_PORT_KEY, GPIO_PIN_KEY) == RESET)
+        {
+            #ifdef KEY_DEBUG
+                printf("EXTI7_IRQHandler!!!\r\n");
+            #endif
+            key_event.eKey_event = KEY_HANDLE;
+            app_sched_event_put(&key_event,sizeof(key_event),key_event_handler);
+            //lcd_event.eLcd_event = lCD_HANDLE;
+            //app_sched_event_put(&lcd_event,sizeof(lcd_event),lcd_event_handler);
+        }
+    
+        /* Check if the IC card is inserted or not */
+        if(GPIO_ReadInputDataBit(GPIO_PORT_IC_CARD_BIT, GPIO_PIN_IC_CARD_BIT) == RESET)
+        {
+            #ifdef IC_CARD_DEBUG
+                printf("IC Card insert!!!\r\n");
+            #endif
+            ic_event.eIC_event = IC_CARD_INSERT;
+            app_sched_event_put(&ic_event,sizeof(ic_event),ic_event_handler);
+        }
+    }
 }
 /**
   * @brief LCD /AES Interrupt routine.
