@@ -14,7 +14,7 @@ void SLE4442_Init(void)
 	#ifdef IC_CARD_DEBUG
 		printf("[IC] SLE4442_Init...\r\n");
 	#endif
-	
+#if 0
     /* Disable interrupts */
 	disableInterrupts();
 
@@ -27,6 +27,16 @@ void SLE4442_Init(void)
 	/* Enable interrupts */
 	enableInterrupts();
 	EXTI_ClearITPendingBit(EXTI_IT_PIN_IC_CARD_BIT);
+#else
+	GPIO_Init(GPIO_PORT_IC_CARD_PGM, GPIO_PIN_IC_CARD_PGM, GPIO_Mode_Out_PP_Low_Fast);
+	GPIO_Init(GPIO_PORT_IC_CARD_PW, GPIO_PIN_IC_CARD_PW, GPIO_Mode_Out_OD_HiZ_Fast);
+	GPIO_Init(GPIO_PORT_IC_CARD_PRE, GPIO_PIN_IC_CARD_PRE, GPIO_Mode_Out_PP_Low_Fast);
+	GPIO_Init(GPIO_PORT_IC_CARD_RST, GPIO_PIN_IC_CARD_RST, GPIO_Mode_Out_PP_Low_Fast);
+	GPIO_Init(GPIO_PORT_IC_CARD_CLK, GPIO_PIN_IC_CARD_CLK, GPIO_Mode_Out_PP_Low_Fast);
+	GPIO_Init(GPIO_PORT_IC_CARD_IO, GPIO_PIN_IC_CARD_IO, GPIO_Mode_Out_PP_Low_Fast);
+	GPIO_Init(GPIO_PORT_IC_CARD_BIT, GPIO_PIN_IC_CARD_BIT, GPIO_Mode_Out_PP_Low_Fast);
+	
+#endif
 }
 
 /***********************************************************************
@@ -282,7 +292,7 @@ void SLE4442_Reset(void)
 void SLE4442_ReadMode(uint8_t * pt,uint8_t count)
 {
 	#ifdef IC_CARD_DEBUG
-		printf("[IC] SLE4442_Reset...\r\n");
+		printf("[IC] SLE4442_ReadMode...\r\n");
 	#endif
 
 	GPIO_ResetBits(GPIO_PORT_IC_CARD_CLK, GPIO_PIN_IC_CARD_CLK);
@@ -359,30 +369,32 @@ uint8_t SLE4442_Verify(uint8_t *pt)
 		}
 		printf("\r\n");
 	#endif
-     if((temp[0] & 0x07) != 0)            //第一字节是错误计数器,如果错误计数器为0,直接退出
+	
+     if((temp[0] & 0x07) != 0)            			//第一字节是错误计数器,如果错误计数器为0,直接退出
      {
-         if((temp[0] & 0x07)==0x07)     // 00000111
+         if((temp[0] & 0x07)==0x07)     			// 00000111
             i = 0x06;
-         else if((temp[0] & 0x07)==0x06)// 00000110 
+         else if((temp[0] & 0x07)==0x06)			// 00000110 
             i = 0x04;
-         else if((temp[0] & 0x07)==0x04)// 00000100
-           i = 0x00;               //将其中一位为1的改为0
+         else if((temp[0] & 0x07)==0x04)			// 00000100
+           i = 0x00;               					//将其中一位为1的改为0
            
         SLE4442_CommWrite(WSM_COMM,0,i);            //修改错误计数器
-        SLE4442_ProcessMode();                  //处理
-        for (i = 1; i < 4; i++, pt++)   //校对3字节的密码
+        SLE4442_ProcessMode();                  	//处理
+        for (i = 1; i < 4; i++, pt++)   			//校对3字节的密码
         {
-			SLE4442_CommWrite(VER_COMM,i,*pt);  //发出校对命令,
-			SLE4442_ProcessMode();             //处理
+			SLE4442_CommWrite(VER_COMM,i,*pt);  	//发出校对命令,
+			SLE4442_ProcessMode();             		//处理
 		}
-        SLE4442_CommWrite(WSM_COMM,0,0xff);      //擦除计数器恢复错误计数器
-        SLE4442_ProcessMode();                  //处理
-        SLE4442_CommWrite(RSM_COMM,0xff,0xff);   //读密码存储区的命令字,第2,3个参数在此命令中被忽略
-        SLE4442_ReadMode(temp, 4);              //读错误计数器的内容
+        SLE4442_CommWrite(WSM_COMM,0,0xff);      	//擦除计数器恢复错误计数器
+        SLE4442_ProcessMode();                  	//处理
+        SLE4442_CommWrite(RSM_COMM,0xff,0xff);   	//读密码存储区的命令字,第2,3个参数在此命令中被忽略
+        SLE4442_ReadMode(temp, 4);              	//读错误计数器的内容
 
-		if((temp[0] & 0x07)==0x07)      //如果没有被成功擦除,表明校对失败
+		if((temp[0] & 0x07)==0x07)      			//如果没有被成功擦除,表明校对失败
 		return 1 ;
 	}
+
 	return 0;
 }
 

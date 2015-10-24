@@ -144,10 +144,11 @@ void valve_event_handler(void * p_event_data, uint16_t event_size)
             
             GPIO_Init(GPIO_PORT_VALVE_IA, GPIO_PIN_VALVE_IA, GPIO_Mode_Out_PP_Low_Fast);
 			GPIO_Init(GPIO_PORT_VALVE_IB, GPIO_PIN_VALVE_IB, GPIO_Mode_Out_PP_Low_Fast);
+			GPIO_Init(GPIO_PORT_VALVE_MONITOR, GPIO_PIN_VALVE_MONITOR, GPIO_Mode_Out_PP_Low_Fast);
                 
             /* Standby */
             GPIO_ResetBits(GPIO_PORT_VALVE_IA, GPIO_PIN_VALVE_IA);
-            GPIO_ResetBits(GPIO_PORT_VALVE_IB, GPIO_PIN_VALVE_IB);
+            GPIO_ResetBits(GPIO_PORT_VALVE_IB, GPIO_PIN_VALVE_IB);			
             break;
 		
 		default:

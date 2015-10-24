@@ -25,12 +25,12 @@ void ic_event_handler(void * p_event_data, uint16_t event_size)
     {
         case IC_CARD_INIT:
             SLE4442_Init();
-			SLE4442_Reset();
+			//SLE4442_Reset();
 			//SLE4442_ReadMainMem(0, yemp, 5);
-			SLE4442_Verify(&yemp[0]);
+			//SLE4442_Verify(&yemp[0]);
 			
-			ic_card_event.eIC_event = IC_CARD_INIT;
-	app_sched_event_put(&ic_card_event,sizeof(ic_event_t),ic_event_handler);
+			//ic_card_event.eIC_event = IC_CARD_INIT;
+			//app_sched_event_put(&ic_card_event,sizeof(ic_event_t),ic_event_handler);
             break;
             
         case IC_CARD_INSERT:

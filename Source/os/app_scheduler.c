@@ -17,7 +17,7 @@
 #include <stdio.h>
 #include "os_util.h"
 
-//#define SCHED_DEBUG
+#define SCHED_DEBUG
 	 
 #ifdef SCHED_DEBUG
 	#define SCHED_LOG 		printf
@@ -252,7 +252,6 @@ void app_evt_wait(void)
 	SCHED_LOG("\r\n[OS] app_evt_wait...\r\n");
 	if(APP_SCHED_QUEUE_EMPTY())
 	{
-		WFE_WakeUpSourceEventCmd(WFE_Source_EXTI_EV2 | WFE_Source_EXTI_EV3, ENABLE);
-		wfi();	
+		IdleTask();
 	}
 }

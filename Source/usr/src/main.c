@@ -27,6 +27,7 @@
 
 /* Includes ------------------------------------------------------------------*/
 #include "stm8l15x.h"
+#include "main.h"
 #include "app_scheduler.h"
 #include "app_trace.h"
 #include <stdio.h>
@@ -44,6 +45,8 @@
 /* Private function prototypes -----------------------------------------------*/
 
 /* Private functions ---------------------------------------------------------*/
+static void CLK_Config(void);
+
 
 /**
   * @brief  Main program.
@@ -52,39 +55,64 @@
   */
 void main(void)
 {
-	disableInterrupts();
-	//app_trace_init();
-	//LED_Init();
-    //LED1_ON();
-	scheduler_init();
+    delay1s(5);
+	CLK_Config();
+
+	sim();									// disable interrupts
+
+	GPIO_Init(GPIOA, GPIO_Pin_All, GPIO_Mode_Out_PP_Low_Fast);
+	GPIO_Init(GPIOB, GPIO_Pin_All, GPIO_Mode_Out_PP_Low_Fast);
+	GPIO_Init(GPIOC, GPIO_Pin_All, GPIO_Mode_Out_PP_Low_Fast);
+	GPIO_Init(GPIOD, GPIO_Pin_All, GPIO_Mode_Out_PP_Low_Fast);
+	GPIO_Init(GPIOE, GPIO_Pin_All, GPIO_Mode_Out_PP_Low_Fast);
+	GPIO_Init(GPIOF, GPIO_Pin_All, GPIO_Mode_Out_PP_Low_Fast);
+	GPIO_Init(GPIOG, GPIO_Pin_All, GPIO_Mode_Out_PP_Low_Fast);
+
+	#ifdef DEBUG
+		AppTrace_Init();
+    	printf("\r\nSTM8L152 Start ...\r\n");
+	#endif
 	
+	LED_Init();
+    LED1_ON();
+	scheduler_init();
+
 	/* Build count init event */
-	//count_event.eCount_event = COUNT_INIT;
-	//app_sched_event_put(&count_event,sizeof(count_event),count_event_handler);
+	count_event.eCount_event = COUNT_INIT;
+	app_sched_event_put(&count_event,sizeof(count_event),count_event_handler);
 	
 	/* Build key init event */
-	//key_event.eKey_event = KEY_INIT;
-	//app_sched_event_put(&key_event,sizeof(key_event),key_event_handler);
+	key_event.eKey_event = KEY_INIT;
+	app_sched_event_put(&key_event,sizeof(key_event),key_event_handler);
 	
 	/* Build the valve standby event */
-	//valve_event.eValve_event = VALVE_STANDBY_EVENT;
-	//app_sched_event_put(&valve_event,sizeof(valve_event),valve_event_handler);
+	valve_event.eValve_event = VALVE_STANDBY_EVENT;
+	app_sched_event_put(&valve_event,sizeof(valve_event),valve_event_handler);
     
-    /* Build the LCD Init event */
-	//lcd_event.eLcd_event = LCD_INIT;
-	//app_sched_event_put(&lcd_event,sizeof(lcd_event),lcd_event_handler);
+    /* Build the LCD init event */
+	lcd_event.eLcd_event = LCD_INIT;
+	app_sched_event_put(&lcd_event,sizeof(lcd_event),lcd_event_handler);
+
+	/* Build the beeper init event */
+	beeper_event.eBeeper_event = BEEPER_INIT;
+	app_sched_event_put(&beeper_event,sizeof(beeper_event),beeper_event_handler);
 
 	/* Build the LCD Init event */
-	//cc112x_event.eCC112x_event = CC112X_INIT_EVENT;
-	//app_sched_event_put(&cc112x_event,sizeof(cc112x_event_t),cc112x_event_handler);
+	cc112x_event.eCC112x_event = CC112X_INIT_EVENT;
+	app_sched_event_put(&cc112x_event,sizeof(cc112x_event),cc112x_event_handler);
 
 	/* Build the LCD Init event */
-	//ic_card_event.eIC_event = IC_CARD_INIT;
-	//app_sched_event_put(&ic_card_event,sizeof(ic_event_t),ic_event_handler);
-			
-	/* enable interrupts */
-	enableInterrupts();
+	ic_card_event.eIC_event = IC_CARD_INIT;
+	app_sched_event_put(&ic_card_event,sizeof(ic_card_event),ic_event_handler);
 
+	/* Build the LCD Init event */
+	battery_event.eBattery_event = ADC_INIT;
+	app_sched_event_put(&battery_event,sizeof(battery_event),battery_event_handler);
+	
+    /* enable interrupts */
+	rim();
+    LED1_OFF();
+	
 	/* Infinite loop */
   	while (1)
   	{
@@ -92,6 +120,48 @@ void main(void)
 		app_evt_wait();
   	}
 }
+
+/***********************************************************************
+  * @brief  IdleTask
+  * @param  None
+  * @retval None
+************************************************************************/
+void IdleTask(void)
+{	
+	#ifdef DEBUG
+		printf("IdleTask ...\r\n");
+		AppTrace_DeInit();
+	#endif
+
+	PWR_UltraLowPowerCmd(ENABLE);
+	CLK_HaltConfig(CLK_Halt_FastWakeup, ENABLE);
+	PWR_FastWakeUpCmd(ENABLE);
+    halt();
+	
+	#ifdef DEBUG
+		AppTrace_Init();
+		printf("Wakeup ...\r\n");
+	#endif
+}
+
+/***********************************************************************
+  * @brief		Configure System Clock 
+  * @param	None
+  * @retval   None
+************************************************************************/
+static void CLK_Config(void)
+{
+  	/* Select HSE as system clock source */
+  	CLK_SYSCLKSourceSwitchCmd(ENABLE);
+  	CLK_SYSCLKSourceConfig(CLK_SYSCLKSource_HSI);
+  
+  	/* system clock prescaler: 1*/
+  	CLK_SYSCLKDivConfig(CLK_SYSCLKDiv_1);
+  	while (CLK_GetSYSCLKSource() != CLK_SYSCLKSource_HSI)
+  	{}
+}
+
+
 
 #ifdef  USR_ASSERT
 /******************************************************************************
@@ -105,7 +175,7 @@ void usr_assert_failed(uint8_t * file, uint32_t line)
 {
   /* User can add his own implementation to report the file name and line number,
      ex: printf("Wrong parameters value: file %s on line %d\r\n", file, line) */
-	printf("Wrong parameters,file: %s, line: %d\r\n", file, line);
+	//printf("Wrong parameters,file: %s, line: %d\r\n", file, line);
 }
 #endif
 
@@ -120,7 +190,7 @@ void usr_assert_failed(uint8_t * file, uint32_t line)
 *******************************************************************************/
 void app_error_handler(uint32_t error_code, uint32_t line_num, const uint8_t * p_file_name)
 {
-	printf("Error NO.: %d, File: %s, Line: %d\r\n", error_code, p_file_name, line_num);
+	//printf("Error NO.: %d, File: %s, Line: %d\r\n", error_code, p_file_name, line_num);
 }
 	
 #endif

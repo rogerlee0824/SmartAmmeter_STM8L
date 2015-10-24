@@ -19,23 +19,30 @@ void count_init(void)
 	#ifdef COUNT_DEBUG
 		printf("[COUNT] count_init\r\n");
 	#endif
-
-	GPIO_Init(GPIO_PORT_COUNT_VCC, GPIO_PIN_COUNT_VCC, GPIO_Mode_Out_PP_Low_Fast);
-	GPIO_SetBits(GPIO_PORT_COUNT_VCC, GPIO_PIN_COUNT_VCC);
-	
-	/* Disable interrupts */
+#if 0
+	// Disable interrupts 
 	disableInterrupts();
+	
+	GPIO_Init(GPIO_PORT_COUNT_VCC, GPIO_PIN_COUNT_VCC, GPIO_Mode_Out_PP_High_Fast);
+	GPIO_SetBits(GPIO_PORT_COUNT_VCC, GPIO_PIN_COUNT_VCC);
 	
 	GPIO_Init(GPIO_PORT_COUNT_A, GPIO_PIN_COUNT_A, GPIO_Mode_In_FL_IT);
     EXTI_SetPinSensitivity(EXTI_PIN_COUNT_A, EXTI_Trigger_COUNT_A);
 	
 	GPIO_Init(GPIO_PORT_COUNT_B, GPIO_PIN_COUNT_B, GPIO_Mode_In_FL_IT);
     EXTI_SetPinSensitivity(EXTI_PIN_COUNT_B, EXTI_Trigger_COUNT_B);
-	
-	/* Enable interrupts */
-	enableInterrupts();
+
 	EXTI_ClearITPendingBit(EXTI_IT_PIN_COUNT_A);
 	EXTI_ClearITPendingBit(EXTI_IT_PIN_COUNT_B);
+	
+	// Enable interrupts 
+	enableInterrupts();
+#else 
+	GPIO_Init(GPIO_PORT_COUNT_B, GPIO_PIN_COUNT_B, GPIO_Mode_Out_PP_Low_Fast);
+	GPIO_Init(GPIO_PORT_COUNT_A, GPIO_PIN_COUNT_A, GPIO_Mode_Out_PP_Low_Fast);
+	GPIO_Init(GPIO_PORT_COUNT_VCC, GPIO_PIN_COUNT_VCC, GPIO_Mode_Out_OD_HiZ_Fast);
+	
+#endif	
 }
 
 /***********************************************************************

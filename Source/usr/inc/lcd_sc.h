@@ -15,7 +15,8 @@
 
 typedef enum {
 	LCD_INIT,
-	lCD_HANDLE
+	lCD_HANDLE,
+	LCD_DEINIT
 } emLcd_event_t;
 
 typedef struct {

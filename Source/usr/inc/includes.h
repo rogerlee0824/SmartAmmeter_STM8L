@@ -3,12 +3,14 @@
 
 #include <stdio.h>
 #include "stm8l15x.h"
+#include "main.h"
 #include "app_trace.h"
 #include "delay.h"
 #include "led.h"
 #include "key.h"
 #include "count.h"
 #include "valve.h"
+#include "Beeper.h"
 #include "lcd_sc.h"
 #include "ic.h"
 #include "cc112x.h"
@@ -16,15 +18,22 @@
 #include "hal_spi_rf_trxeb.h"
 #include "cc1120_sniff_mode.h"
 #include "app_scheduler.h"
+#include "battery.h"
 
 
 /* Define debug function -------------------------------------------------------*/
+#define DEBUG
+
+#ifdef DEBUG
 #define KEY_DEBUG
-#define COUNT_DEBUG
+//#define COUNT_DEBUG
 //#define COUNT_TEST
-#define VALVE_DEBUG
-#define IC_CARD_DEBUG
+//#define VALVE_DEBUG
+//#define IC_CARD_DEBUG
 //#define CC112x_DEBUG
+//#define BEEPER_DEBUG
+//#define BATTERY_DEBUG
+#endif
 
 
 #define STM8L_SUCCESS                           (0)  // Successful command
@@ -32,14 +41,15 @@
 
 /* Define Trace pins -----------------------------------------------------------*/
 #define APP_TRACE_USART							USART3
-#define GPIO_PORT_USART_TX  					GPIOE
-#define GPIO_PIN_USART_TX  						GPIO_Pin_0
+#define GPIO_PORT_USART_TX  					GPIOG
+#define GPIO_PIN_USART_TX  						GPIO_Pin_1
+#define GPIO_PORT_USART_RX  					GPIOG
+#define GPIO_PIN_USART_RX  						GPIO_Pin_0
+
 
 /* Define LED pins ------------------------------------------------------------*/
 #define GPIO_PORT_LED1  						GPIOC
 #define GPIO_PIN_LED1  							GPIO_Pin_4
-#define GPIO_PORT_LED3  						GPIOG
-#define GPIO_PIN_LED3  							GPIO_Pin_0
 
 /* Define KEY pins -----------------------------------------------------------*/
 #define GPIO_PORT_KEY  							GPIOE
@@ -57,6 +67,7 @@
 #define EXTI_PIN_COUNT_A 						EXTI_Pin_2
 #define EXTI_Trigger_COUNT_A 					EXTI_Trigger_Rising
 #define EXTI_IT_PIN_COUNT_A						EXTI_IT_Pin2
+
 #define GPIO_PORT_COUNT_B  						GPIOA
 #define GPIO_PIN_COUNT_B  						GPIO_Pin_3
 #define EXTI_PIN_COUNT_B 						EXTI_Pin_3
@@ -92,9 +103,9 @@
 #define GPIO_PIN_CC112X_GPIO2   				GPIO_Pin_1
 #define GPIO_PORT_CC112X_GPIO3   				GPIOF
 #define GPIO_PIN_CC112X_GPIO3   				GPIO_Pin_4
-
 #define GPIO_PORT_CC112X_GPIO0  				GPIOF
 #define GPIO_PIN_CC112X_GPIO0  					GPIO_Pin_0
+
 #define EXTI_PIN_CC112X_GPIO0 					EXTI_Pin_0
 #define EXTI_Trigger_CC112X_GPIO0 				EXTI_Trigger_Falling
 #define EXTI_IT_PIN_CC112X_GPIO0				EXTI_IT_Pin0
@@ -143,8 +154,8 @@
 #define GPIO_PIN_IC_CARD_PGM  				    GPIO_Pin_2
 #define GPIO_PORT_IC_CARD_PW  					GPIOC
 #define GPIO_PIN_IC_CARD_PW  				    GPIO_Pin_1
-#define GPIO_PORT_IC_CARD_PRE  					GPIOC
-#define GPIO_PIN_IC_CARD_PRE  				    GPIO_Pin_0
+#define GPIO_PORT_IC_CARD_PRE  					GPIOG
+#define GPIO_PIN_IC_CARD_PRE  				    GPIO_Pin_7
 #define GPIO_PORT_IC_CARD_RST  					GPIOG
 #define GPIO_PIN_IC_CARD_RST  				    GPIO_Pin_6
 #define GPIO_PORT_IC_CARD_CLK  				    GPIOG
@@ -157,6 +168,21 @@
 #define EXTI_PIN_IC_CARD_BIT  					EXTI_Pin_7
 #define EXTI_Trigger_IC_CARD_BIT 				EXTI_Trigger_Falling
 #define EXTI_IT_PIN_IC_CARD_BIT					EXTI_IT_Pin7
+
+/* Define BEEP pins -----------------------------------------------------------*/
+#define GPIO_PORT_BEEPER  						GPIOE
+#define GPIO_PIN_BEEPER  						GPIO_Pin_6
+
+/* Define BATTERY pins -----------------------------------------------------------*/
+#define GPIO_PORT_VTEST_5V  					GPIOC
+#define GPIO_PIN_VTEST_5V  						GPIO_Pin_3
+#define GPIO_PORT_ADC_OUT  						GPIOD
+#define GPIO_PIN_ADC_OUT  						GPIO_Pin_4
+#define GPIO_PORT_AA_OUT_IN  					GPIOD
+#define GPIO_PIN_AA_OUT_IN  					GPIO_Pin_6
+#define GPIO_PORT_AA_CTRL  						GPIOC
+#define GPIO_PIN_AA_CTRL  						GPIO_Pin_7
+
 
 
 /* Exported constants --------------------------------------------------------*/

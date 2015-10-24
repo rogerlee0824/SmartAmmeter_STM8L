@@ -5,18 +5,20 @@ key_event_t key_event;
 
 void KEY_Init(void)
 {
-	/* Disable interrupts */
-	disableInterrupts();
-	
 	#ifdef KEY_DEBUG
 		printf("[KEY] KEY_Init...\r\n");
 	#endif
+	
+	/* Disable interrupts */
+	disableInterrupts();
+	
 	GPIO_Init(GPIO_PORT_KEY, GPIO_PIN_KEY, GPIO_Mode_In_FL_IT);
     EXTI_SetPinSensitivity(EXTI_PIN_KEY, EXTI_Trigger_KEY);
 	
+	EXTI_ClearITPendingBit(EXTI_IT_PIN_KEY);
+	
 	/* Enable interrupts */
 	enableInterrupts();
-	EXTI_ClearITPendingBit(EXTI_IT_PIN_KEY);
 }
 
 /***********************************************************************

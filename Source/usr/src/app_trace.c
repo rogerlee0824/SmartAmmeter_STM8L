@@ -9,7 +9,7 @@
   * @param  None
   * @retval None
 ************************************************************************/
-void app_trace_init(void)
+void AppTrace_Init(void)
 {
 	/* Enables USART3 clock. */
 	CLK_PeripheralClockConfig(CLK_Peripheral_USART3, ENABLE);
@@ -32,6 +32,27 @@ void app_trace_init(void)
 #endif
 }
 
+/***********************************************************************
+  * @brief  Initialise the trace interface.
+  * @param  None
+  * @retval None
+************************************************************************/
+void AppTrace_DeInit(void)
+{
+	/* Disables USART3 clock. */
+	CLK_PeripheralClockConfig(CLK_Peripheral_USART3, ENABLE);
+	GPIO_ExternalPullUpConfig(GPIO_PORT_USART_TX, GPIO_PIN_USART_TX, DISABLE);
+	
+	USART_DeInit(APP_TRACE_USART);
+	GPIO_Init(GPIO_PORT_USART_TX, GPIO_PIN_USART_TX, GPIO_Mode_Out_PP_Low_Fast);
+	GPIO_Init(GPIO_PORT_USART_RX, GPIO_PIN_USART_RX, GPIO_Mode_Out_PP_Low_Fast);
+}
+
+/***********************************************************************
+  * @brief  Initialise the trace interface.
+  * @param  None
+  * @retval None
+************************************************************************/
 int putchar(int ch)
 {
 	uint16_t time_out = 10000;
@@ -44,6 +65,11 @@ int putchar(int ch)
 	return (ch);
 }
 
+/***********************************************************************
+  * @brief  Initialise the trace interface.
+  * @param  None
+  * @retval None
+************************************************************************/
 void UartSendMultiBytes(uint8_t * pbuf,uint16_t len)
 {
 	uint16_t time_out = 10000;

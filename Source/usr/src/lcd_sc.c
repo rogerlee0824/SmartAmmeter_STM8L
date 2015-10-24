@@ -19,33 +19,15 @@ static void LCD_SC_DispSeven(uint8_t bit_num);
 static void LCD_SC_DispEight(uint8_t bit_num);
 static void LCD_SC_DispNine(uint8_t bit_num);
 static void LCD_SC_DispDot(uint8_t bit_num);
-void (*dispBuffer[10])(uint8_t bit_num);
+void (*dispBuffer[10])(uint8_t bit_num) = {NULL};
 
 /***********************************************************************
   * @brief  Initialises the close valve icon.
   * @param  None
   * @retval None
 ************************************************************************/
-void LCD_SC_Init(void)
+void LCD_SC_Init_A(void)
 {
-	/* Enable LCD clock */
-	CLK_PeripheralClockConfig(CLK_Peripheral_LCD, ENABLE);
-	CLK_RTCClockConfig(CLK_RTCCLKSource_LSE, CLK_RTCCLKDiv_1);
-
-	/* Initialize the LCD */
-	LCD_Init(LCD_Prescaler_2, LCD_Divider_18, LCD_Duty_1_8,
-	   LCD_Bias_1_4, LCD_VoltageSource_Internal);
-
-	/* Mask register*/
-	LCD_PortMaskConfig(LCD_PortMaskRegister_0, 0xff);
-	LCD_PortMaskConfig(LCD_PortMaskRegister_1, 0x3f);
-
-	LCD_ContrastConfig(LCD_Contrast_Level_7);
-	LCD_PulseOnDurationConfig(LCD_PulseOnDuration_7);
-
-	/*  Enable LCD peripheral */
-	LCD_Cmd(ENABLE);
-
 	/* Init  functions */
 	dispBuffer[0] = LCD_SC_DispZero;
 	dispBuffer[1] = LCD_SC_DispOne;
@@ -57,6 +39,50 @@ void LCD_SC_Init(void)
 	dispBuffer[7] = LCD_SC_DispSeven;
 	dispBuffer[8] = LCD_SC_DispEight;
 	dispBuffer[9] = LCD_SC_DispNine;
+}
+
+void LCD_SC_Init(void)
+{
+	/* Enable LCD clock */
+	CLK_PeripheralClockConfig(CLK_Peripheral_RTC, ENABLE);
+	CLK_PeripheralClockConfig(CLK_Peripheral_LCD, ENABLE);
+	CLK_RTCClockConfig(CLK_RTCCLKSource_LSE, CLK_RTCCLKDiv_1);
+
+	/* Initialize the LCD */
+	LCD_Init(LCD_Prescaler_2, LCD_Divider_18, LCD_Duty_1_8,
+	   		LCD_Bias_1_4, LCD_VoltageSource_Internal);
+
+	/* Mask register*/
+	LCD_PortMaskConfig(LCD_PortMaskRegister_0, 0xff);
+	LCD_PortMaskConfig(LCD_PortMaskRegister_1, 0x3f);
+
+	LCD_ContrastConfig(LCD_Contrast_Level_7);
+	LCD_PulseOnDurationConfig(LCD_PulseOnDuration_7);
+
+	/*  Enable LCD peripheral */
+	LCD_Cmd(ENABLE);
+}
+
+void LCD_SC_DeInit(void)
+{
+	GPIO_Init(GPIO_PORT_COM0, GPIO_PIN_COM0, GPIO_Mode_Out_PP_Low_Fast);
+	GPIO_Init(GPIO_PORT_COM1, GPIO_PIN_COM1, GPIO_Mode_Out_PP_Low_Fast);
+	GPIO_Init(GPIO_PORT_COM2, GPIO_PIN_COM2, GPIO_Mode_Out_PP_Low_Fast);
+	GPIO_Init(GPIO_PORT_COM3, GPIO_PIN_COM3, GPIO_Mode_Out_PP_Low_Fast);
+	GPIO_Init(GPIO_PORT_S0, GPIO_PIN_S0, GPIO_Mode_Out_PP_Low_Fast);
+	GPIO_Init(GPIO_PORT_S1, GPIO_PIN_S1, GPIO_Mode_Out_PP_Low_Fast);
+	GPIO_Init(GPIO_PORT_S2, GPIO_PIN_S2, GPIO_Mode_Out_PP_Low_Fast);
+	GPIO_Init(GPIO_PORT_S3, GPIO_PIN_S3, GPIO_Mode_Out_PP_Low_Fast);
+	GPIO_Init(GPIO_PORT_S4, GPIO_PIN_S4, GPIO_Mode_Out_PP_Low_Fast);
+	GPIO_Init(GPIO_PORT_S5, GPIO_PIN_S5, GPIO_Mode_Out_PP_Low_Fast);
+	GPIO_Init(GPIO_PORT_S6, GPIO_PIN_S6, GPIO_Mode_Out_PP_Low_Fast);
+	GPIO_Init(GPIO_PORT_S7, GPIO_PIN_S7, GPIO_Mode_Out_PP_Low_Fast);
+	GPIO_Init(GPIO_PORT_S8, GPIO_PIN_S8, GPIO_Mode_Out_PP_Low_Fast);
+	GPIO_Init(GPIO_PORT_S9, GPIO_PIN_S9, GPIO_Mode_Out_PP_Low_Fast);
+	GPIO_Init(GPIO_PORT_S10, GPIO_PIN_S10, GPIO_Mode_Out_PP_Low_Fast);
+	GPIO_Init(GPIO_PORT_S11, GPIO_PIN_S11, GPIO_Mode_Out_PP_Low_Fast);
+	GPIO_Init(GPIO_PORT_S12, GPIO_PIN_S12, GPIO_Mode_Out_PP_Low_Fast);
+	GPIO_Init(GPIO_PORT_S13, GPIO_PIN_S13, GPIO_Mode_Out_PP_Low_Fast);
 }
 
 /***********************************************************************
@@ -420,11 +446,12 @@ void lcd_event_handler(void * p_event_data, uint16_t event_size)
 	switch(lcd_event_tmp->eLcd_event)
 	{
         case LCD_INIT:
-            //LCD_SC_Init();
-			//LCD_DeInit();
+			//LCD_SC_Init_A();
+			LCD_SC_DeInit();
             break;
             
         case lCD_HANDLE:
+			LCD_SC_Init();
 			disp_icon |= (DISP_VALVE_CLOSE_ICON | DISP_STERE_ICON);
 			lcd_disp_info.is_disp_digits = 1;
 			lcd_disp_info.is_disp_dot = 1;
@@ -447,8 +474,18 @@ void lcd_event_handler(void * p_event_data, uint16_t event_size)
 			/* Initialize the LCD */
 			LCD_Cmd(DISABLE);
 			LCD_DeInit();
-			CLK_PeripheralClockConfig(CLK_Peripheral_LCD, DISABLE);
+			//CLK_PeripheralClockConfig(CLK_Peripheral_LCD, DISABLE);
+			
+			lcd_event.eLcd_event = LCD_DEINIT;
+			app_sched_event_put(&lcd_event,sizeof(lcd_event),lcd_event_handler);
             break;
+
+		case LCD_DEINIT:
+			/* Initialize the LCD */
+			LCD_Cmd(DISABLE);
+			LCD_DeInit();
+			LCD_SC_DeInit();
+			break;
         
 		default:
 			break;

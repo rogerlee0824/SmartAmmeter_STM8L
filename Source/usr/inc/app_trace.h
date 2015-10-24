@@ -3,7 +3,8 @@
 
 #include "stm8l15x.h"
 
-void app_trace_init(void);
+void AppTrace_Init(void);
+void AppTrace_DeInit(void);
 void UartSendMultiBytes(uint8_t * pbuf,uint16_t len);
 
 #endif
