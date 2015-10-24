@@ -14,6 +14,8 @@ typedef struct {
 } key_event_t;
 
 extern key_event_t key_event;
+extern uint8_t key_is_pressed;
+
 
 void KEY_Init(void);
 void key_event_handler(void * p_event_data, uint16_t event_size);

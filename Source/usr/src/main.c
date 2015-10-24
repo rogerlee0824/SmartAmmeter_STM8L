@@ -97,15 +97,15 @@ void main(void)
 	beeper_event.eBeeper_event = BEEPER_INIT;
 	app_sched_event_put(&beeper_event,sizeof(beeper_event),beeper_event_handler);
 
-	/* Build the LCD Init event */
+	/* Build the cc1120 Init event */
 	cc112x_event.eCC112x_event = CC112X_INIT_EVENT;
 	app_sched_event_put(&cc112x_event,sizeof(cc112x_event),cc112x_event_handler);
 
-	/* Build the LCD Init event */
+	/* Build the IC card Init event */
 	ic_card_event.eIC_event = IC_CARD_INIT;
 	app_sched_event_put(&ic_card_event,sizeof(ic_card_event),ic_event_handler);
 
-	/* Build the LCD Init event */
+	/* Build the ADC Init event */
 	battery_event.eBattery_event = ADC_INIT;
 	app_sched_event_put(&battery_event,sizeof(battery_event),battery_event_handler);
 	
@@ -137,7 +137,7 @@ void IdleTask(void)
 	CLK_HaltConfig(CLK_Halt_FastWakeup, ENABLE);
 	PWR_FastWakeUpCmd(ENABLE);
     halt();
-	
+
 	#ifdef DEBUG
 		AppTrace_Init();
 		printf("Wakeup ...\r\n");

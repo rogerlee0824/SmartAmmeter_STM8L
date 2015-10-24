@@ -26,7 +26,8 @@
 
 #ifdef DEBUG
 #define KEY_DEBUG
-//#define COUNT_DEBUG
+#define LCD_DEBUG
+#define COUNT_DEBUG
 //#define COUNT_TEST
 //#define VALVE_DEBUG
 //#define IC_CARD_DEBUG

@@ -17,7 +17,7 @@
 #include <stdio.h>
 #include "os_util.h"
 
-#define SCHED_DEBUG
+//#define SCHED_DEBUG
 	 
 #ifdef SCHED_DEBUG
 	#define SCHED_LOG 		printf

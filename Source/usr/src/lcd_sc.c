@@ -5,6 +5,7 @@
 lcd_disp_info_t lcd_disp_info;
 lcd_event_t lcd_event;
 lcd_ram_t   lcd_ram;
+uint8_t lcd_is_on = 0;
 uint8_t disp_temp[6] = {0xFF};
 uint16_t disp_icon = 0;
 
@@ -441,17 +442,27 @@ static void LCD_SC_Display(lcd_disp_info_t * p_lcd_disp_info)
 void lcd_event_handler(void * p_event_data, uint16_t event_size)
 {
 	lcd_event_t * lcd_event_tmp = p_event_data;
-	uint8_t temp[6] = {1,2,3,4,5,6};
+	uint8_t temp[6] = {8,8,8,8,5,6};
 	
 	switch(lcd_event_tmp->eLcd_event)
 	{
         case LCD_INIT:
-			//LCD_SC_Init_A();
+			#ifdef LCD_DEBUG
+				printf("LCD_INIT ...\r\n");
+			#endif
+			LCD_SC_Init_A();
 			LCD_SC_DeInit();
             break;
             
         case lCD_HANDLE:
-			LCD_SC_Init();
+			#ifdef LCD_DEBUG
+				printf("lCD_HANDLE ...\r\n");
+			#endif
+			if(!lcd_is_on)
+			{
+				LCD_SC_Init();
+				lcd_is_on = 1;
+			}
 			disp_icon |= (DISP_VALVE_CLOSE_ICON | DISP_STERE_ICON);
 			lcd_disp_info.is_disp_digits = 1;
 			lcd_disp_info.is_disp_dot = 1;
@@ -474,17 +485,21 @@ void lcd_event_handler(void * p_event_data, uint16_t event_size)
 			/* Initialize the LCD */
 			LCD_Cmd(DISABLE);
 			LCD_DeInit();
-			//CLK_PeripheralClockConfig(CLK_Peripheral_LCD, DISABLE);
 			
 			lcd_event.eLcd_event = LCD_DEINIT;
 			app_sched_event_put(&lcd_event,sizeof(lcd_event),lcd_event_handler);
             break;
 
 		case LCD_DEINIT:
+			#ifdef LCD_DEBUG
+				printf("LCD_DEINIT ...\r\n");
+			#endif
+			
 			/* Initialize the LCD */
 			LCD_Cmd(DISABLE);
 			LCD_DeInit();
 			LCD_SC_DeInit();
+			lcd_is_on = 0;
 			break;
         
 		default:

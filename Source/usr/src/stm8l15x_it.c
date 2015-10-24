@@ -219,13 +219,19 @@ INTERRUPT_HANDLER(EXTI2_IRQHandler,10)
   */
 INTERRUPT_HANDLER(EXTI3_IRQHandler,11)
 {
-	if(GPIO_ReadInputDataBit(GPIO_PORT_COUNT_B, GPIO_PIN_COUNT_B) == RESET)
-	{
-		/* Cleat Interrupt pending bit */
-  		EXTI_ClearITPendingBit(EXTI_IT_PIN_COUNT_B);
+	if(EXTI_GetITStatus(EXTI_IT_Pin3))
+    {
+    	/* Cleat Interrupt pending bit */
+  		EXTI_ClearITPendingBit(EXTI_IT_Pin3);
+    
+		if(GPIO_ReadInputDataBit(GPIO_PORT_COUNT_B, GPIO_PIN_COUNT_B) == RESET)
+		{
+			/* Cleat Interrupt pending bit */
+  			EXTI_ClearITPendingBit(EXTI_IT_PIN_COUNT_B);
 
-		count_event.eCount_event = COUNT_B_INT;
-		app_sched_event_put(&count_event,sizeof(count_event),count_event_handler);
+			count_event.eCount_event = COUNT_B_INT;
+			app_sched_event_put(&count_event,sizeof(count_event),count_event_handler);
+		}
 	}
 }
 
@@ -281,17 +287,16 @@ INTERRUPT_HANDLER(EXTI7_IRQHandler,15)
         /* Check if the key is pressed or not */
         if(GPIO_ReadInputDataBit(GPIO_PORT_KEY, GPIO_PIN_KEY) == RESET)
         {
-            #ifdef KEY_DEBUG
-                printf("EXTI7_IRQHandler!!!\r\n");
-            #endif
-            key_event.eKey_event = KEY_HANDLE;
-            app_sched_event_put(&key_event,sizeof(key_event),key_event_handler);
-
-			lcd_event.eLcd_event = lCD_HANDLE;
-            app_sched_event_put(&lcd_event,sizeof(lcd_event),lcd_event_handler);
-			
-			cc112x_event.eCC112x_event = CC112X_TRANSMIT_EVENT;
-			app_sched_event_put(&cc112x_event,sizeof(cc112x_event_t),cc112x_event_handler);
+        	if(!key_is_pressed)
+        	{
+        		key_is_pressed = 1;
+            	#ifdef KEY_DEBUG
+					AppTrace_Init();
+                	printf("EXTI7_IRQHandler!!!\r\n");
+            	#endif
+            	key_event.eKey_event = KEY_HANDLE;
+            	app_sched_event_put(&key_event,sizeof(key_event),key_event_handler);
+        	}
         }
     
         /* Check if the IC card is inserted or not */
