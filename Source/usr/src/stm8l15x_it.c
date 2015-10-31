@@ -202,13 +202,26 @@ INTERRUPT_HANDLER(EXTI2_IRQHandler,10)
     {
         /* Cleat Interrupt pending bit */
   		EXTI_ClearITPendingBit(EXTI_IT_Pin2);
-        
+		#ifdef COUNT_DEBUG
+			AppTrace_Init();
+			printf("[COUNT] EXTI2_IRQHandler,%d\r\n",count_a_int);
+		#endif
+	
         /* Check if the interrupt is from the COUNT_A pin or not */
-        if(GPIO_ReadInputDataBit(GPIO_PORT_COUNT_A, GPIO_PIN_COUNT_A) == RESET)
+        if(GPIO_ReadInputDataBit(GPIO_PORT_COUNT_A, GPIO_PIN_COUNT_A) == SET)
         {
-            count_event.eCount_event = COUNT_A_INT;
-            app_sched_event_put(&count_event,sizeof(count_event),count_event_handler);
-        }
+        	/* Cleat Interrupt pending bit */
+  			EXTI_ClearITPendingBit(EXTI_IT_PIN_COUNT_A);
+			if(!count_a_int)
+			{
+				count_init_AorB(0);
+				count_a_int = 1;
+				
+            	count_event.eCount_event = COUNT_A_INT;
+            	app_sched_event_put(&count_event,sizeof(count_event),count_event_handler);
+        	}
+		}
+		
     }
 }
 
@@ -223,14 +236,23 @@ INTERRUPT_HANDLER(EXTI3_IRQHandler,11)
     {
     	/* Cleat Interrupt pending bit */
   		EXTI_ClearITPendingBit(EXTI_IT_Pin3);
-    
-		if(GPIO_ReadInputDataBit(GPIO_PORT_COUNT_B, GPIO_PIN_COUNT_B) == RESET)
+		#ifdef COUNT_DEBUG
+			AppTrace_Init();
+			printf("[COUNT] EXTI3_IRQHandler,%d\r\n",count_b_int);
+		#endif
+		
+		if(GPIO_ReadInputDataBit(GPIO_PORT_COUNT_B, GPIO_PIN_COUNT_B) == SET)
 		{
 			/* Cleat Interrupt pending bit */
   			EXTI_ClearITPendingBit(EXTI_IT_PIN_COUNT_B);
+			if(!count_b_int)
+			{
+				count_init_AorB(1);
+				count_b_int = 1;
 
-			count_event.eCount_event = COUNT_B_INT;
-			app_sched_event_put(&count_event,sizeof(count_event),count_event_handler);
+				count_event.eCount_event = COUNT_B_INT;
+				app_sched_event_put(&count_event,sizeof(count_event),count_event_handler);
+			}
 		}
 	}
 }

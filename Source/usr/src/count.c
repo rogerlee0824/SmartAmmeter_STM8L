@@ -6,6 +6,7 @@ count_event_t count_event;
 static uint8_t count_a = 0,count_b = 0;
 static uint8_t u8BCDCount[5] = {0x00,0x00,0x00,0x00,0x00};
 volatile uint32_t AmmeterCount = 0;
+uint8_t count_a_int = 0,count_b_int = 0;
 
 uint32_t ConvertBCD_to_HEX(uint8_t * pu8Array);
 
@@ -19,13 +20,12 @@ void count_init(void)
 	#ifdef COUNT_DEBUG
 		printf("[COUNT] count_init\r\n");
 	#endif
-#if 1
+
 	// Disable interrupts 
 	disableInterrupts();
 	
 	GPIO_Init(GPIO_PORT_COUNT_VCC, GPIO_PIN_COUNT_VCC, GPIO_Mode_Out_OD_HiZ_Fast);
-	//GPIO_SetBits(GPIO_PORT_COUNT_VCC, GPIO_PIN_COUNT_VCC);
-	
+
 	GPIO_Init(GPIO_PORT_COUNT_A, GPIO_PIN_COUNT_A, GPIO_Mode_In_FL_IT);
     EXTI_SetPinSensitivity(EXTI_PIN_COUNT_A, EXTI_Trigger_COUNT_A);
 	
@@ -37,12 +37,37 @@ void count_init(void)
 	
 	// Enable interrupts 
 	enableInterrupts();
-#else 
-	GPIO_Init(GPIO_PORT_COUNT_B, GPIO_PIN_COUNT_B, GPIO_Mode_Out_PP_Low_Fast);
-	GPIO_Init(GPIO_PORT_COUNT_A, GPIO_PIN_COUNT_A, GPIO_Mode_Out_PP_Low_Fast);
-	GPIO_Init(GPIO_PORT_COUNT_VCC, GPIO_PIN_COUNT_VCC, GPIO_Mode_Out_OD_HiZ_Fast);
-	
-#endif	
+}
+
+/***********************************************************************
+  * @brief  Initialise the resource for count.
+  * @param  None
+  * @retval None
+************************************************************************/
+void count_init_AorB(uint8_t temp)
+{
+	#ifdef COUNT_DEBUG
+		printf("[COUNT] count_init_AorB\r\n");
+	#endif
+
+	// Disable interrupts 
+	disableInterrupts();
+
+	if(temp)
+	{	
+		GPIO_Init(GPIO_PORT_COUNT_B, GPIO_PIN_COUNT_B, GPIO_Mode_Out_PP_High_Fast);
+		GPIO_Init(GPIO_PORT_COUNT_A, GPIO_PIN_COUNT_A, GPIO_Mode_In_FL_IT);
+    	EXTI_SetPinSensitivity(EXTI_PIN_COUNT_A, EXTI_Trigger_COUNT_A);
+	}
+	else
+	{
+		GPIO_Init(GPIO_PORT_COUNT_A, GPIO_PIN_COUNT_A, GPIO_Mode_Out_PP_High_Fast);
+		GPIO_Init(GPIO_PORT_COUNT_B, GPIO_PIN_COUNT_B, GPIO_Mode_In_FL_IT);
+    	EXTI_SetPinSensitivity(EXTI_PIN_COUNT_B, EXTI_Trigger_COUNT_B);
+	}
+
+	// Enable interrupts 
+	enableInterrupts();
 }
 
 /***********************************************************************
@@ -213,22 +238,32 @@ void count_event_handler(void * p_event_data, uint16_t event_size)
 			#ifdef COUNT_DEBUG
 				printf("[COUNT] COUNT_A\r\n");
 			#endif
-			if(!count_a)
+			
+			if(count_a_int)
 			{
-				count_a = 1;
+				count_a_int = 0;
+				if(!count_a)
+				{
+					count_a = 1;
+				}
+				do_count();
 			}
-			do_count();
 			break;
 			
 		case COUNT_B_INT:
 			#ifdef COUNT_DEBUG
 				printf("[COUNT] COUNT_B\r\n");
 			#endif
-			if(!count_b)
+
+			if(count_b_int)
 			{
-				count_b = 1;
+				count_b_int = 0;
+				if(!count_b)
+				{
+					count_b = 1;
+				}
+				do_count();
 			}
-			do_count();
 			break;
 			
 		default:

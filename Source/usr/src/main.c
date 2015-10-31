@@ -47,7 +47,6 @@
 /* Private functions ---------------------------------------------------------*/
 static void CLK_Config(void);
 
-
 /**
   * @brief  Main program.
   * @param  None
@@ -55,6 +54,8 @@ static void CLK_Config(void);
   */
 void main(void)
 {
+	float fVoltage = 0;
+	
     delay1s(5);
 	CLK_Config();
 
@@ -77,43 +78,42 @@ void main(void)
     LED1_ON();
 	scheduler_init();
 
-	/* Build count init event */
+	// Build count init event 
 	count_event.eCount_event = COUNT_INIT;
 	app_sched_event_put(&count_event,sizeof(count_event),count_event_handler);
 	
-	/* Build key init event */
+	// Build key init event 
 	key_event.eKey_event = KEY_INIT;
 	app_sched_event_put(&key_event,sizeof(key_event),key_event_handler);
 	
-	/* Build the valve standby event */
+	// Build the valve standby event 
 	valve_event.eValve_event = VALVE_STANDBY_EVENT;
 	app_sched_event_put(&valve_event,sizeof(valve_event),valve_event_handler);
     
-    /* Build the LCD init event */
+    // Build the LCD init event 
 	lcd_event.eLcd_event = LCD_INIT;
 	app_sched_event_put(&lcd_event,sizeof(lcd_event),lcd_event_handler);
 
-	/* Build the beeper init event */
+	// Build the beeper init event 
 	beeper_event.eBeeper_event = BEEPER_INIT;
 	app_sched_event_put(&beeper_event,sizeof(beeper_event),beeper_event_handler);
 
-	/* Build the cc1120 Init event */
+	// Build the cc1120 Init event 
 	cc112x_event.eCC112x_event = CC112X_INIT_EVENT;
 	app_sched_event_put(&cc112x_event,sizeof(cc112x_event),cc112x_event_handler);
 
-	/* Build the IC card Init event */
+	// Build the IC card Init event 
 	ic_card_event.eIC_event = IC_CARD_INIT;
 	app_sched_event_put(&ic_card_event,sizeof(ic_card_event),ic_event_handler);
 
-	/* Build the ADC Init event */
-	battery_event.eBattery_event = ADC_INIT;
-	app_sched_event_put(&battery_event,sizeof(battery_event),battery_event_handler);
+	//battery_measure(&fVoltage);
+	//printf("[Battery] End voltage is %f\r\n",fVoltage);
 	
-    /* enable interrupts */
+    // enable interrupts 
 	rim();
     LED1_OFF();
-	
-	/* Infinite loop */
+	 
+	// Infinite loop 
   	while (1)
   	{
 		app_sched_execute();
@@ -151,17 +151,15 @@ void IdleTask(void)
 ************************************************************************/
 static void CLK_Config(void)
 {
-  	/* Select HSE as system clock source */
+  	// Select HSE as system clock source 
   	CLK_SYSCLKSourceSwitchCmd(ENABLE);
   	CLK_SYSCLKSourceConfig(CLK_SYSCLKSource_HSI);
   
-  	/* system clock prescaler: 1*/
+  	// system clock prescaler: 1
   	CLK_SYSCLKDivConfig(CLK_SYSCLKDiv_1);
   	while (CLK_GetSYSCLKSource() != CLK_SYSCLKSource_HSI)
   	{}
 }
-
-
 
 #ifdef  USR_ASSERT
 /******************************************************************************
