@@ -5,7 +5,8 @@
 
 typedef enum {
 	IC_CARD_INIT,
-	IC_CARD_INSERT
+	IC_CARD_INSERT,
+	IC_CARD_DEINIT
 } emIC_event_t;
 
 typedef struct {

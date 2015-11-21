@@ -45,7 +45,7 @@ void AppTrace_DeInit(void)
 	
 	USART_DeInit(APP_TRACE_USART);
 	GPIO_Init(GPIO_PORT_USART_TX, GPIO_PIN_USART_TX, GPIO_Mode_Out_PP_Low_Fast);
-	GPIO_Init(GPIO_PORT_USART_RX, GPIO_PIN_USART_RX, GPIO_Mode_Out_PP_Low_Fast);
+	//GPIO_Init(GPIO_PORT_USART_RX, GPIO_PIN_USART_RX, GPIO_Mode_Out_PP_Low_Fast);
 }
 
 /***********************************************************************

@@ -30,7 +30,7 @@
 #define COUNT_DEBUG
 //#define COUNT_TEST
 //#define VALVE_DEBUG
-//#define IC_CARD_DEBUG
+#define IC_CARD_DEBUG
 //#define CC112x_DEBUG
 //#define BEEPER_DEBUG
 //#define BATTERY_DEBUG
@@ -53,14 +53,14 @@
 #define GPIO_PIN_LED1  							GPIO_Pin_4
 
 /* Define KEY pins -----------------------------------------------------------*/
-#define GPIO_PORT_KEY  							GPIOE
-#define GPIO_PIN_KEY  							GPIO_Pin_7
-#define EXTI_PIN_KEY 							EXTI_Pin_7
+#define GPIO_PORT_KEY  							GPIOC
+#define GPIO_PIN_KEY  							GPIO_Pin_1
+#define EXTI_PIN_KEY 							EXTI_Pin_1
 #define EXTI_Trigger_KEY 						EXTI_Trigger_Falling
-#define EXTI_IT_PIN_KEY							EXTI_IT_Pin7
+#define EXTI_IT_PIN_KEY							EXTI_IT_Pin1
 
 /* Define COUNT pins -----------------------------------------------------------*/
-#define GPIO_PORT_COUNT_VCC  					GPIOC
+#define GPIO_PORT_COUNT_VCC  					GPIOG
 #define GPIO_PIN_COUNT_VCC  					GPIO_Pin_0
 
 #define GPIO_PORT_COUNT_A  						GPIOA
@@ -153,8 +153,8 @@
 /* Define IC card pins -------------------------------------------------------*/
 #define GPIO_PORT_IC_CARD_PGM  					GPIOC
 #define GPIO_PIN_IC_CARD_PGM  				    GPIO_Pin_2
-#define GPIO_PORT_IC_CARD_PW  					GPIOC
-#define GPIO_PIN_IC_CARD_PW  				    GPIO_Pin_1
+#define GPIO_PORT_IC_CARD_PW  					GPIOE
+#define GPIO_PIN_IC_CARD_PW  				    GPIO_Pin_7
 #define GPIO_PORT_IC_CARD_PRE  					GPIOG
 #define GPIO_PIN_IC_CARD_PRE  				    GPIO_Pin_7
 #define GPIO_PORT_IC_CARD_RST  					GPIOG

@@ -106,8 +106,8 @@ void main(void)
 	ic_card_event.eIC_event = IC_CARD_INIT;
 	app_sched_event_put(&ic_card_event,sizeof(ic_card_event),ic_event_handler);
 
-	//battery_measure(&fVoltage);
-	//printf("[Battery] End voltage is %f\r\n",fVoltage);
+	battery_measure(&fVoltage);
+	printf("[Battery] End voltage is %f\r\n",fVoltage);
 	
     // enable interrupts 
 	rim();

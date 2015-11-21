@@ -22,5 +22,8 @@ void SLE4442_WriteMainMem(uint8_t addr, uint8_t *pt);
 void SLE4442_ReadMainMem(uint8_t addr, uint8_t *pt,uint8_t count);
 void SLE4442_ProtectByte(uint8_t addr,uint8_t *pt);
 uint8_t SLE4442_Verify(uint8_t *pt);
+void SLE4442_I2C_Init(void);
+void SLE4442_I2C_DeInit(void);
+void SLE4442_PowerON(void);
 
 #endif

@@ -24,7 +24,7 @@ void count_init(void)
 	// Disable interrupts 
 	disableInterrupts();
 	
-	GPIO_Init(GPIO_PORT_COUNT_VCC, GPIO_PIN_COUNT_VCC, GPIO_Mode_Out_OD_HiZ_Fast);
+	GPIO_Init(GPIO_PORT_COUNT_VCC, GPIO_PIN_COUNT_VCC, GPIO_Mode_Out_PP_High_Fast);
 
 	GPIO_Init(GPIO_PORT_COUNT_A, GPIO_PIN_COUNT_A, GPIO_Mode_In_FL_IT);
     EXTI_SetPinSensitivity(EXTI_PIN_COUNT_A, EXTI_Trigger_COUNT_A);

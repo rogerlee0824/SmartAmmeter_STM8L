@@ -186,9 +186,26 @@ INTERRUPT_HANDLER(EXTI0_IRQHandler,8)
   */
 INTERRUPT_HANDLER(EXTI1_IRQHandler,9)
 {
-    /* In order to detect unexpected events during development,
-       it is recommended to set a breakpoint on the following instruction.
-    */
+    if(EXTI_GetITStatus(EXTI_IT_PIN_KEY))
+    {
+        /* Cleat Interrupt pending bit */
+  		EXTI_ClearITPendingBit(EXTI_IT_PIN_KEY);
+        
+        /* Check if the key is pressed or not */
+        if(GPIO_ReadInputDataBit(GPIO_PORT_KEY, GPIO_PIN_KEY) == RESET)
+        {
+        	if(!key_is_pressed)
+        	{
+        		key_is_pressed = 1;
+            	#ifdef KEY_DEBUG
+					AppTrace_Init();
+                	printf("EXTI1_IRQHandler!!!\r\n");
+            	#endif
+            	key_event.eKey_event = KEY_HANDLE;
+            	app_sched_event_put(&key_event,sizeof(key_event),key_event_handler);
+        	}
+        }
+    }
 }
 
 /**
@@ -301,30 +318,16 @@ INTERRUPT_HANDLER(EXTI6_IRQHandler,14)
   */
 INTERRUPT_HANDLER(EXTI7_IRQHandler,15)
 {
-    if(EXTI_GetITStatus(EXTI_IT_Pin7))
+    if(EXTI_GetITStatus(EXTI_IT_PIN_IC_CARD_BIT))
     {
         /* Cleat Interrupt pending bit */
-  		EXTI_ClearITPendingBit(EXTI_IT_Pin7);
+  		EXTI_ClearITPendingBit(EXTI_IT_PIN_IC_CARD_BIT);
         
-        /* Check if the key is pressed or not */
-        if(GPIO_ReadInputDataBit(GPIO_PORT_KEY, GPIO_PIN_KEY) == RESET)
-        {
-        	if(!key_is_pressed)
-        	{
-        		key_is_pressed = 1;
-            	#ifdef KEY_DEBUG
-					AppTrace_Init();
-                	printf("EXTI7_IRQHandler!!!\r\n");
-            	#endif
-            	key_event.eKey_event = KEY_HANDLE;
-            	app_sched_event_put(&key_event,sizeof(key_event),key_event_handler);
-        	}
-        }
-    
         /* Check if the IC card is inserted or not */
         if(GPIO_ReadInputDataBit(GPIO_PORT_IC_CARD_BIT, GPIO_PIN_IC_CARD_BIT) == RESET)
         {
             #ifdef IC_CARD_DEBUG
+				AppTrace_Init();
                 printf("IC Card insert!!!\r\n");
             #endif
             ic_card_event.eIC_event = IC_CARD_INSERT;
