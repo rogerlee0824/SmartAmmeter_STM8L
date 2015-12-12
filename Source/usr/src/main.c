@@ -56,7 +56,6 @@ void main(void)
 {
 	float fVoltage = 0;
 	
-    delay1s(5);
 	CLK_Config();
 
 	sim();									// disable interrupts
@@ -68,6 +67,8 @@ void main(void)
 	GPIO_Init(GPIOE, GPIO_Pin_All, GPIO_Mode_Out_PP_Low_Fast);
 	GPIO_Init(GPIOF, GPIO_Pin_All, GPIO_Mode_Out_PP_Low_Fast);
 	GPIO_Init(GPIOG, GPIO_Pin_All, GPIO_Mode_Out_PP_Low_Fast);
+
+	delay1s(5);
 
 	#ifdef DEBUG
 		AppTrace_Init();
@@ -151,7 +152,7 @@ void IdleTask(void)
 ************************************************************************/
 static void CLK_Config(void)
 {
-  	// Select HSE as system clock source 
+  	// Select HSI as system clock source 
   	CLK_SYSCLKSourceSwitchCmd(ENABLE);
   	CLK_SYSCLKSourceConfig(CLK_SYSCLKSource_HSI);
   
