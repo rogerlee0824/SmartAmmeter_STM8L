@@ -15,6 +15,7 @@
 
 typedef enum {
 	LCD_INIT,
+	LCD_DISPLAY_REMAIN_GAS,
 	lCD_HANDLE,
 	LCD_DEINIT
 } emLcd_event_t;

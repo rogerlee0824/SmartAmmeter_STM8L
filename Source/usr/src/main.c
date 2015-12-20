@@ -55,8 +55,9 @@ static void CLK_Config(void);
 void main(void)
 {
 	float fVoltage = 0;
-	
+
 	CLK_Config();
+	FlashInit();
 
 	sim();									// disable interrupts
 
@@ -109,7 +110,7 @@ void main(void)
 
 	battery_measure(&fVoltage);
 	printf("[Battery] End voltage is %f\r\n",fVoltage);
-	
+
     // enable interrupts 
 	rim();
     LED1_OFF();

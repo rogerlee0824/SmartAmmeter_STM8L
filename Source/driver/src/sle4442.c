@@ -289,8 +289,8 @@ void SLE4442_Break(void)
 ************************************************************************/
 void SLE4442_Reset(void)
 {
-	uint8_t temp[4] = {0};
-	
+    uint8_t temp[4] = {0};
+    
 	#ifdef IC_CARD_DEBUG
 		//printf("\r\n[IC] SLE4442_Reset...\r\n");
 	#endif
@@ -397,9 +397,10 @@ void SLE4442_CommWrite(uint8_t a, uint8_t b, uint8_t c)
 }
 
 /***********************************************************************
-  * @brief  Read date from AT88SC102
-  * @param  None
-  * @retval None
+  * @brief  Verify the password of SLE4442
+  * @param  pt: The password
+  * @retval 	1: Pass
+  *			0: Fail
 ************************************************************************/
 uint8_t SLE4442_Verify(uint8_t *pt)
 {

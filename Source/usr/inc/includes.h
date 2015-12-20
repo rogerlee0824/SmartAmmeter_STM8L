@@ -19,7 +19,8 @@
 #include "cc1120_sniff_mode.h"
 #include "app_scheduler.h"
 #include "battery.h"
-
+#include "flash.h"
+#include "dataConvert.h"
 
 /* Define debug function -------------------------------------------------------*/
 #define DEBUG
@@ -30,7 +31,7 @@
 #define COUNT_DEBUG
 //#define COUNT_TEST
 //#define VALVE_DEBUG
-#define IC_CARD_DEBUG
+//#define IC_CARD_DEBUG
 //#define CC112x_DEBUG
 //#define BEEPER_DEBUG
 //#define BATTERY_DEBUG
@@ -183,7 +184,6 @@
 #define GPIO_PIN_AA_OUT_IN  					GPIO_Pin_6
 #define GPIO_PORT_AA_CTRL  						GPIOC
 #define GPIO_PIN_AA_CTRL  						GPIO_Pin_7
-
 
 
 /* Exported constants --------------------------------------------------------*/

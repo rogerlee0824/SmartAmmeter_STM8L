@@ -1,6 +1,7 @@
 #include "lcd_sc.h"
 #include "includes.h"
 #include "string.h"
+#include <stdio.h>
 
 lcd_disp_info_t lcd_disp_info;
 lcd_event_t lcd_event;
@@ -434,6 +435,43 @@ static void LCD_SC_Display(lcd_disp_info_t * p_lcd_disp_info)
 		LCD_SC_DispDot(p_lcd_disp_info->disp_dot_num);
 	}
 }
+
+void LCD_SC_DisplayRemainGas(void)
+{
+	uint32_t gas = 5;
+	uint8_t gas_bcd[6] = {0};
+
+	gas = DataMem_GetRemainGas();
+	Covertu32To6bitBCD(gas,gas_bcd);
+	if(!lcd_is_on)
+	{
+		LCD_SC_Init();
+		lcd_is_on = 1;
+	}
+	disp_icon |= DISP_STERE_ICON;
+	lcd_disp_info.is_disp_digits = 1;
+	lcd_disp_info.is_disp_dot = 0;
+	lcd_disp_info.is_disp_icon = 1;
+	lcd_disp_info.p_disp_contex = gas_bcd;
+	lcd_disp_info.disp_contex_len = sizeof(gas_bcd);
+	lcd_disp_info.disp_dot_num = 0;
+	lcd_disp_info.p_disp_icon = &disp_icon;
+			
+	LCD_SC_Init();
+	LCD_SC_Display(&lcd_disp_info);
+    LCD_SC_DoDisp();
+
+	delay1s(10);
+
+	disp_icon &= 0;
+	memset(&lcd_disp_info, 0, sizeof(lcd_disp_info_t));
+	LCD_SC_Display(&lcd_disp_info);
+			
+	/* Initialize the LCD */
+	LCD_Cmd(DISABLE);
+	LCD_DeInit();
+}
+
 /***********************************************************************
   * @brief  Handles the event for LCD displaying.
   * @param  None
@@ -443,6 +481,7 @@ void lcd_event_handler(void * p_event_data, uint16_t event_size)
 {
 	lcd_event_t * lcd_event_tmp = p_event_data;
 	uint8_t temp[6] = {8,8,8,8,5,6};
+	uint32_t u32temp = 654321;
 	
 	switch(lcd_event_tmp->eLcd_event)
 	{
@@ -485,6 +524,16 @@ void lcd_event_handler(void * p_event_data, uint16_t event_size)
 			/* Initialize the LCD */
 			LCD_Cmd(DISABLE);
 			LCD_DeInit();
+			
+			lcd_event.eLcd_event = LCD_DEINIT;
+			app_sched_event_put(&lcd_event,sizeof(lcd_event),lcd_event_handler);
+            break;
+
+		case LCD_DISPLAY_REMAIN_GAS:
+			#ifdef LCD_DEBUG
+				printf("LCD_DISPLAY_REMAIN_GAS ...\r\n");
+			#endif
+			LCD_SC_DisplayRemainGas();
 			
 			lcd_event.eLcd_event = LCD_DEINIT;
 			app_sched_event_put(&lcd_event,sizeof(lcd_event),lcd_event_handler);

@@ -135,6 +135,9 @@
       <name>$PROJ_DIR$\..\Source\usr\src\count.c</name>
     </file>
     <file>
+      <name>$PROJ_DIR$\..\Source\usr\src\dataConvert.c</name>
+    </file>
+    <file>
       <name>$PROJ_DIR$\..\Source\usr\src\delay.c</name>
     </file>
     <file>

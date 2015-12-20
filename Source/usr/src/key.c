@@ -43,11 +43,14 @@ void key_event_handler(void * p_event_data, uint16_t event_size)
 			#endif
 			if(key_is_pressed)
 			{
-				beeper_event.eBeeper_event = BEEPER;
-				beeper_event.beeper_times = BEEPER_TIMES_REMEAN_GAS_LOW;
-				app_sched_event_put(&beeper_event,sizeof(beeper_event),beeper_event_handler);
+				if(DataMem_GetRemainGas() < 5)
+				{
+					beeper_event.eBeeper_event = BEEPER;
+					beeper_event.beeper_times = BEEPER_TIMES_REMEAN_GAS_LOW;
+					app_sched_event_put(&beeper_event,sizeof(beeper_event),beeper_event_handler);
+				}
 				
-				lcd_event.eLcd_event = lCD_HANDLE;
+				lcd_event.eLcd_event = LCD_DISPLAY_REMAIN_GAS;
             	app_sched_event_put(&lcd_event,sizeof(lcd_event),lcd_event_handler);
 
 				key_is_pressed = 0;
