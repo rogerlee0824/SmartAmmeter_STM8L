@@ -35,6 +35,7 @@
 //#define CC112x_DEBUG
 //#define BEEPER_DEBUG
 //#define BATTERY_DEBUG
+#define DATAMEM_DEBUG
 #endif
 
 
@@ -185,6 +186,11 @@
 #define GPIO_PORT_AA_CTRL  						GPIOC
 #define GPIO_PIN_AA_CTRL  						GPIO_Pin_7
 
+
+typedef union {
+	uint32_t l;
+	uint8_t arr[4];
+}uint32_t_or_u8_u;
 
 /* Exported constants --------------------------------------------------------*/
 /* Uncomment the line below to expanse the "assert_param" macro in the 

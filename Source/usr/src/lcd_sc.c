@@ -450,11 +450,11 @@ void LCD_SC_DisplayRemainGas(void)
 	}
 	disp_icon |= DISP_STERE_ICON;
 	lcd_disp_info.is_disp_digits = 1;
-	lcd_disp_info.is_disp_dot = 0;
+	lcd_disp_info.is_disp_dot = 1;
 	lcd_disp_info.is_disp_icon = 1;
 	lcd_disp_info.p_disp_contex = gas_bcd;
 	lcd_disp_info.disp_contex_len = sizeof(gas_bcd);
-	lcd_disp_info.disp_dot_num = 0;
+	lcd_disp_info.disp_dot_num = 4;
 	lcd_disp_info.p_disp_icon = &disp_icon;
 			
 	LCD_SC_Init();

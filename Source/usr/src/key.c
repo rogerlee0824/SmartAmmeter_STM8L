@@ -43,7 +43,7 @@ void key_event_handler(void * p_event_data, uint16_t event_size)
 			#endif
 			if(key_is_pressed)
 			{
-				if(DataMem_GetRemainGas() < 5)
+				if(DataMem_GetTopGas() < 5)
 				{
 					beeper_event.eBeeper_event = BEEPER;
 					beeper_event.beeper_times = BEEPER_TIMES_REMEAN_GAS_LOW;

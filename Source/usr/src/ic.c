@@ -89,9 +89,9 @@ static void IC_Card_AddNewGas(void)
 	uint32_t ic_new_gas = 0;
 	
 	ic_new_gas = IC_Card_GetNewGas();
-	rd_num_temp = DataMem_GetRemainGas();
+	rd_num_temp = DataMem_GetTopGas();
 	rd_num_temp += ic_new_gas;
-	DataMem_SetRemainGas(rd_num_temp);
+	DataMem_SetTopGas(rd_num_temp);
 	IC_Card_ClearGas();
 }
 

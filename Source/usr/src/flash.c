@@ -60,35 +60,100 @@ uint8_t DataMem_ReadByte(uint32_t Address)
   	return tmp;
 }
 
-uint8_t DataMem_SetRemainGas(uint32_t tmp)
+uint8_t DataMem_SetTopGas(uint32_t tmp)
 {
-	uint32_t start_addr = FLASH_DATA_EEPROM_START_PHYSICAL_ADDRESS;
-	uint8_t u8arr[4];
-	uint8_t state = 1;
+	uint32_t start_addr = FLASH_DATA_EEPROM_START_PHYSICAL_ADDRESS + DATAMEM_TOP_GAS_START_ADDR;
+	uint32_t_or_u8_u temp;
+	uint8_t state = 0;
 
-	u8arr[0] = (uint8_t)tmp;
-	u8arr[1] = (uint8_t)(tmp >> 8);
-	u8arr[2] = (uint8_t)(tmp >> 16);
-	u8arr[3] = (uint8_t)(tmp >> 24);
-	state = DataMem_Write(start_addr, u8arr, sizeof(uint32_t));
-	
+	#ifdef DATAMEM_DEBUG
+		printf("[DATAMEM] DataMem_SetTopGas\r\n");
+	#endif
+
+	temp.l = tmp;
+	state = DataMem_Write(start_addr, temp.arr, DATAMEM_TOP_GAS_OFFSET);
+
 	return (state);
 }
 
-uint32_t DataMem_GetRemainGas(void)
+uint8_t DataMem_SetRealGas(uint32_t tmp)
 {
-	uint32_t start_addr = FLASH_DATA_EEPROM_START_PHYSICAL_ADDRESS;
-	uint8_t u8Arr[4] = {0};
-	uint32_t temp;
+	uint32_t start_addr = FLASH_DATA_EEPROM_START_PHYSICAL_ADDRESS + DATAMEM_REAL_GAS_START_ADDR;
+	uint32_t_or_u8_u temp;
+	uint8_t state = 0;
 
-	for(uint8_t i = 0;i < sizeof(uint32_t);i ++)
+	#ifdef DATAMEM_DEBUG
+		printf("[DATAMEM] DataMem_SetRealGas\r\n");
+	#endif
+
+	temp.l = tmp;
+	state = DataMem_Write(start_addr, temp.arr, DATAMEM_REAL_GAS_OFFSET);
+
+	return (state);
+}
+
+uint32_t DataMem_GetTopGas(void)
+{
+	uint32_t start_addr = FLASH_DATA_EEPROM_START_PHYSICAL_ADDRESS + DATAMEM_TOP_GAS_START_ADDR;
+	uint32_t_or_u8_u temp;
+
+	#ifdef DATAMEM_DEBUG
+		printf("[DATAMEM] DataMem_GetTopGas\r\n");
+	#endif
+
+	for(uint8_t i = 0;i < DATAMEM_TOP_GAS_OFFSET;i ++)
 	{
-		u8Arr[i] = DataMem_ReadByte(start_addr + i);
+		temp.arr[i] = DataMem_ReadByte(start_addr + i);
 	}
 
-	temp = (uint32_t)u8Arr[0] | ((uint32_t)u8Arr[1] << 8) | ((uint32_t)u8Arr[2] << 16) | ((uint32_t)u8Arr[3] << 24);
+	#ifdef DATAMEM_DEBUG
+		for(uint8_t i = 0;i < DATAMEM_TOP_GAS_OFFSET;i ++)
+		{
+			printf("0x%02x, ",temp.arr[i]);
+		}
+		printf("\r\n");
+	#endif
 
-	return (temp);
+	return (temp.l);
+}
+
+uint32_t DataMem_GetRealGas(void)
+{
+	uint32_t start_addr = FLASH_DATA_EEPROM_START_PHYSICAL_ADDRESS + DATAMEM_REAL_GAS_START_ADDR;
+	uint32_t_or_u8_u temp;
+
+	#ifdef DATAMEM_DEBUG
+		printf("[DATAMEM] DataMem_GetRealGas\r\n");
+	#endif
+
+	for(uint8_t i = 0;i < DATAMEM_TOP_GAS_OFFSET;i ++)
+	{
+		temp.arr[i] = DataMem_ReadByte(start_addr + i);
+	}
+
+	#ifdef DATAMEM_DEBUG
+		for(uint8_t i = 0;i < DATAMEM_TOP_GAS_OFFSET;i ++)
+		{
+			printf("0x%02x, ",temp.arr[i]);
+		}
+		printf("\r\n");
+	#endif
+	
+	return (temp.l);
+}
+uint32_t DataMem_GetRemainGas(void)
+{
+	uint32_t real_gas = 0;
+	uint32_t top_gas = 0;
+
+	#ifdef DATAMEM_DEBUG
+		printf("[DATAMEM] DataMem_GetRemainGas\r\n");
+	#endif
+
+	real_gas = DataMem_GetRealGas();
+	top_gas = DataMem_GetTopGas();
+
+	return (top_gas - real_gas);
 }
 
 

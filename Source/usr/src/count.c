@@ -10,6 +10,21 @@ uint8_t count_a_int = 0,count_b_int = 0;
 
 uint32_t ConvertBCD_to_HEX(uint8_t * pu8Array);
 
+void Count_Cnt_Init(void)
+{
+	uint32_t top = 0;
+	uint32_t real = 0;
+
+	if(DataMem_GetTopGas() > 999999)
+	{
+		DataMem_SetTopGas(0);
+	}
+	
+	if(DataMem_GetRealGas() > 999999)
+	{
+		DataMem_SetRealGas(0);
+	}
+}
 /***********************************************************************
   * @brief  Initialise the resource for count.
   * @param  None
@@ -34,6 +49,9 @@ void count_init(void)
 
 	EXTI_ClearITPendingBit(EXTI_IT_PIN_COUNT_A);
 	EXTI_ClearITPendingBit(EXTI_IT_PIN_COUNT_B);
+
+	Count_Cnt_Init();
+	
 	
 	// Enable interrupts 
 	enableInterrupts();
@@ -181,15 +199,18 @@ static void CountMeter(void)
 	#ifdef COUNT_DEBUG
 		printf("[COUNT] CountMeter...\r\n");
 	#endif
+	AmmeterCount = DataMem_GetRealGas();
 	AmmeterCount ++;
 	if(AmmeterCount >= 999999)//·­±í
 	{
 		AmmeterCount = 0;
 	}
+	DataMem_SetRealGas(AmmeterCount);
 	ConvertHEX_to_BCD(AmmeterCount, u8BCDCount);
 	#ifdef COUNT_TEST
 		UpdataLCD(u8BCDCount);
 	#endif
+	
 	#ifdef COUNT_DEBUG
 		printf("%02x %02x %02x %02x %02x\r\n",u8BCDCount[0],u8BCDCount[1],u8BCDCount[2],u8BCDCount[3],u8BCDCount[4]);
 	#endif
