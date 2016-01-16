@@ -31,11 +31,11 @@
 #define COUNT_DEBUG
 //#define COUNT_TEST
 //#define VALVE_DEBUG
-//#define IC_CARD_DEBUG
+#define IC_CARD_DEBUG
 //#define CC112x_DEBUG
 //#define BEEPER_DEBUG
 //#define BATTERY_DEBUG
-#define DATAMEM_DEBUG
+//#define DATAMEM_DEBUG
 #endif
 
 
@@ -117,54 +117,77 @@
 /* Define LCD pins ------------------------------------------------------------*/
 #define GPIO_PORT_COM0  					    GPIOA
 #define GPIO_PIN_COM0  						    GPIO_Pin_4
+
 #define GPIO_PORT_COM1  					    GPIOA
 #define GPIO_PIN_COM1  						    GPIO_Pin_5
+
 #define GPIO_PORT_COM2  					    GPIOA
 #define GPIO_PIN_COM2  						    GPIO_Pin_6
+
 #define GPIO_PORT_COM3  					    GPIOD
 #define GPIO_PIN_COM3  						    GPIO_Pin_1
+
 #define GPIO_PORT_S0  					        GPIOA
 #define GPIO_PIN_S0  						    GPIO_Pin_7
+
 #define GPIO_PORT_S1  					        GPIOE
 #define GPIO_PIN_S1  						    GPIO_Pin_0
+
 #define GPIO_PORT_S2  					        GPIOE
 #define GPIO_PIN_S2  						    GPIO_Pin_1
+
 #define GPIO_PORT_S3  					        GPIOE
 #define GPIO_PIN_S3  						    GPIO_Pin_2
+
 #define GPIO_PORT_S4  					        GPIOE
 #define GPIO_PIN_S4  						    GPIO_Pin_3
+
 #define GPIO_PORT_S5  					        GPIOE
 #define GPIO_PIN_S5  						    GPIO_Pin_4
+
 #define GPIO_PORT_S6  					        GPIOE
 #define GPIO_PIN_S6  						    GPIO_Pin_5
+
 #define GPIO_PORT_S7  					        GPIOD
 #define GPIO_PIN_S7  						    GPIO_Pin_0
+
 #define GPIO_PORT_S8  					        GPIOD
 #define GPIO_PIN_S8  						    GPIO_Pin_2
+
 #define GPIO_PORT_S9  					        GPIOD
 #define GPIO_PIN_S9  						    GPIO_Pin_3
+
 #define GPIO_PORT_S10  					        GPIOB
 #define GPIO_PIN_S10  						    GPIO_Pin_0
+
 #define GPIO_PORT_S11  					        GPIOB
 #define GPIO_PIN_S11  						    GPIO_Pin_1
+
 #define GPIO_PORT_S12  					        GPIOB
 #define GPIO_PIN_S12  						    GPIO_Pin_2
+
 #define GPIO_PORT_S13  					        GPIOB
 #define GPIO_PIN_S13  						    GPIO_Pin_3
 
 /* Define IC card pins -------------------------------------------------------*/
 #define GPIO_PORT_IC_CARD_PGM  					GPIOC
 #define GPIO_PIN_IC_CARD_PGM  				    GPIO_Pin_2
+
 #define GPIO_PORT_IC_CARD_PW  					GPIOE
 #define GPIO_PIN_IC_CARD_PW  				    GPIO_Pin_7
+
 #define GPIO_PORT_IC_CARD_PRE  					GPIOG
 #define GPIO_PIN_IC_CARD_PRE  				    GPIO_Pin_7
+
 #define GPIO_PORT_IC_CARD_RST  					GPIOG
 #define GPIO_PIN_IC_CARD_RST  				    GPIO_Pin_6
+
 #define GPIO_PORT_IC_CARD_CLK  				    GPIOG
 #define GPIO_PIN_IC_CARD_CLK  				    GPIO_Pin_5
+
 #define GPIO_PORT_IC_CARD_IO  					GPIOG
 #define GPIO_PIN_IC_CARD_IO  				    GPIO_Pin_4
+
 #define GPIO_PORT_IC_CARD_BIT  				    GPIOD
 #define GPIO_PIN_IC_CARD_BIT  				    GPIO_Pin_7
 

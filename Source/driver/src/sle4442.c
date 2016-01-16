@@ -38,7 +38,7 @@ void SLE4442_Init(void)
 	/* Disable interrupts */
 	disableInterrupts();
 
-	GPIO_Init(GPIO_PORT_IC_CARD_BIT, GPIO_PIN_IC_CARD_BIT, GPIO_Mode_In_FL_IT);
+	GPIO_Init(GPIO_PORT_IC_CARD_BIT, GPIO_PIN_IC_CARD_BIT, GPIO_Mode_In_PU_IT);
     EXTI_SetPinSensitivity(EXTI_PIN_IC_CARD_BIT, EXTI_Trigger_IC_CARD_BIT);
 
 	EXTI_ClearITPendingBit(EXTI_IT_PIN_IC_CARD_BIT);
@@ -199,12 +199,12 @@ void SLE4442_Read(uint8_t * pDstBuffer, uint8_t len)
 	#endif
 	SLE4442_I2C_Start();
 	
-	GPIO_Init(GPIO_PORT_IC_CARD_IO, GPIO_PIN_IC_CARD_IO, GPIO_Mode_Out_PP_Low_Fast);
+	GPIO_Init(GPIO_PORT_IC_CARD_IO, GPIO_PIN_IC_CARD_IO, GPIO_Mode_In_FL_No_IT);
 	for(i = 0;i < len;i ++)
 	{	
 		*(pDstBuffer + i) = SLE4442_I2C_ReadByte();
 	}
-	GPIO_Init(GPIO_PORT_IC_CARD_IO, GPIO_PIN_IC_CARD_IO, GPIO_Mode_Out_PP_Low_Fast);
+	GPIO_Init(GPIO_PORT_IC_CARD_IO, GPIO_PIN_IC_CARD_IO, GPIO_Mode_Out_OD_HiZ_Fast);
 	
 	SLE4442_I2C_Stop();
 }
