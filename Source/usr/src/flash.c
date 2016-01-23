@@ -71,6 +71,7 @@ uint8_t DataMem_SetTopGas(uint32_t tmp)
 	#endif
 
 	temp.l = tmp;
+	ConvertU32Endian(&temp.l);
 	state = DataMem_Write(start_addr, temp.arr, DATAMEM_TOP_GAS_OFFSET);
 
 	return (state);
@@ -87,6 +88,7 @@ uint8_t DataMem_SetRealGas(uint32_t tmp)
 	#endif
 
 	temp.l = tmp;
+	ConvertU32Endian(&temp.l);
 	state = DataMem_Write(start_addr, temp.arr, DATAMEM_REAL_GAS_OFFSET);
 
 	return (state);
@@ -114,6 +116,8 @@ uint32_t DataMem_GetTopGas(void)
 		printf("\r\n");
 	#endif
 
+	ConvertU32Endian(&temp.l);
+
 	return (temp.l);
 }
 
@@ -138,13 +142,17 @@ uint32_t DataMem_GetRealGas(void)
 		}
 		printf("\r\n");
 	#endif
+
+	ConvertU32Endian(&temp.l);
 	
 	return (temp.l);
 }
+
 uint32_t DataMem_GetRemainGas(void)
 {
 	uint32_t real_gas = 0;
 	uint32_t top_gas = 0;
+	uint32_t remain_gas = 0;
 
 	#ifdef DATAMEM_DEBUG
 		printf("[DATAMEM] DataMem_GetRemainGas\r\n");
@@ -153,10 +161,16 @@ uint32_t DataMem_GetRemainGas(void)
 	real_gas = DataMem_GetRealGas();
 	top_gas = DataMem_GetTopGas();
 
-	return (top_gas - real_gas);
+	if(real_gas < top_gas)
+	{
+		remain_gas = top_gas - real_gas;
+	}
+	else
+	{
+		remain_gas = 0;
+	}
+
+	return (remain_gas);
 }
-
-
-
 
 

@@ -170,11 +170,11 @@ static void CLK_Config(void)
   * @param  line: assert_param error line source number
   * @retval None
 *******************************************************************************/
-void usr_assert_failed(uint8_t * file, uint32_t line)
+void usr_assert_failed(uint8_t * file, uint16_t line)
 {
   /* User can add his own implementation to report the file name and line number,
      ex: printf("Wrong parameters value: file %s on line %d\r\n", file, line) */
-	//printf("Wrong parameters,file: %s, line: %d\r\n", file, line);
+	printf("Wrong parameters,file: %s, line: %d\r\n", file, line);
 }
 #endif
 
@@ -187,9 +187,9 @@ void usr_assert_failed(uint8_t * file, uint32_t line)
  * @param[in] line_num    Line number where the handler is called.
  * @param[in] p_file_name Pointer to the file name.
 *******************************************************************************/
-void app_error_handler(uint32_t error_code, uint32_t line_num, const uint8_t * p_file_name)
+void app_error_handler(uint16_t error_code, uint16_t line_num, const uint8_t * p_file_name)
 {
-	//printf("Error NO.: %d, File: %s, Line: %d\r\n", error_code, p_file_name, line_num);
+	printf("Error NO.: %d, File: %s, Line: %d\r\n", error_code, p_file_name, line_num);
 }
 	
 #endif

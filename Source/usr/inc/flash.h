@@ -3,13 +3,10 @@
 
 #include "stm8l15x.h"
 
-#define DATAMEM_TOP_GAS_START_ADDR			(0x00)
-#define DATAMEM_TOP_GAS_OFFSET    			(4)
-#define DATAMEM_REAL_GAS_START_ADDR			(0x04)
+#define DATAMEM_REAL_GAS_START_ADDR			(0x00)
 #define DATAMEM_REAL_GAS_OFFSET    			(4)
-
-
-
+#define DATAMEM_TOP_GAS_START_ADDR			(0x04)
+#define DATAMEM_TOP_GAS_OFFSET    			(4)
 
 void FlashInit(void);
 uint8_t DataMem_Write(uint32_t addr, uint8_t * pu8Buffer, uint8_t size);

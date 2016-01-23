@@ -11,7 +11,7 @@ void SLE4442_I2C_Init(void);
 ************************************************************************/
 void SLE4442_Init(void)
 {
-	#ifdef IC_CARD_DEBUG
+	#ifdef SLE4442_DEBUG
 		printf("\r\n[IC] SLE4442_Init...\r\n");
 	#endif
 #if 0
@@ -56,7 +56,7 @@ void SLE4442_Init(void)
 ************************************************************************/
 void SLE4442_PowerON(void)
 {
-	#ifdef IC_CARD_DEBUG
+	#ifdef SLE4442_DEBUG
 		printf("\r\n[IC] SLE4442_PowerON...\r\n");
 	#endif
         
@@ -70,7 +70,7 @@ void SLE4442_PowerON(void)
 ************************************************************************/
 void SLE4442_PowerOff(void)
 {
-	#ifdef IC_CARD_DEBUG
+	#ifdef SLE4442_DEBUG
 		printf("\r\n[IC] SLE4442_PowerOff...\r\n");
 	#endif
         
@@ -85,7 +85,7 @@ void SLE4442_PowerOff(void)
 ************************************************************************/
 void SLE4442_I2C_Init(void)
 {
-	#ifdef IC_CARD_DEBUG
+	#ifdef SLE4442_DEBUG
 		printf("[IC] SLE4442_I2C_Init...\r\n");
 	#endif
         
@@ -100,7 +100,7 @@ void SLE4442_I2C_Init(void)
 ************************************************************************/
 void SLE4442_I2C_DeInit(void)
 {
-	#ifdef IC_CARD_DEBUG
+	#ifdef SLE4442_DEBUG
 		printf("[IC] SLE4442_I2C_DeInit...\r\n");
 	#endif
         
@@ -116,7 +116,7 @@ void SLE4442_I2C_DeInit(void)
 ************************************************************************/
 void SLE4442_I2C_Start(void)
 {
-	#ifdef IC_CARD_DEBUG
+	#ifdef SLE4442_DEBUG
 		//printf("[IC] SLE4442_I2C_Start...\r\n");
 	#endif
 
@@ -136,7 +136,7 @@ void SLE4442_I2C_Start(void)
 ************************************************************************/
 void SLE4442_I2C_Stop(void)
 {
-	#ifdef IC_CARD_DEBUG
+	#ifdef SLE4442_DEBUG
 		//printf("[IC] SLE4442_I2C_Stop...\r\n");
 	#endif
 	
@@ -160,7 +160,7 @@ uint8_t SLE4442_I2C_ReadByte(void)
 	uint8_t temp = 0;
 	uint8_t value = 0;
 	
-	#ifdef IC_CARD_DEBUG
+	#ifdef SLE4442_DEBUG
 		//printf("[IC] SLE4442_I2C_ReadByte...\r\n");
 	#endif
 
@@ -194,7 +194,7 @@ void SLE4442_Read(uint8_t * pDstBuffer, uint8_t len)
 {
 	uint8_t i;
 
-	#ifdef IC_CARD_DEBUG
+	#ifdef SLE4442_DEBUG
 		printf("[IC] SLE4442_Read...\r\n");
 	#endif
 	SLE4442_I2C_Start();
@@ -218,7 +218,7 @@ void SLE4442_I2C_WriteByte(uint8 * pSrcBuffer)
 {
 	uint8_t i,value;
 	
-	#ifdef IC_CARD_DEBUG
+	#ifdef SLE4442_DEBUG
 		//printf("[IC] SLE4442_I2C_WriteByte...\r\n");
 	#endif
 
@@ -251,7 +251,7 @@ void SLE4442_Write(uint8_t * pDstBuffer, uint8_t len)
 {
 	uint8_t i;
 
-	#ifdef IC_CARD_DEBUG
+	#ifdef SLE4442_DEBUG
 		printf("[IC] SLE4442_Write...\r\n");
 	#endif
 	SLE4442_I2C_Start();
@@ -291,7 +291,7 @@ void SLE4442_Reset(void)
 {
     uint8_t temp[4] = {0};
     
-	#ifdef IC_CARD_DEBUG
+	#ifdef SLE4442_DEBUG
 		//printf("\r\n[IC] SLE4442_Reset...\r\n");
 	#endif
 
@@ -326,7 +326,7 @@ void SLE4442_Reset(void)
     GPIO_ResetBits(GPIO_PORT_IC_CARD_CLK, GPIO_PIN_IC_CARD_CLK);   		//I/O  __ /\___/
 	delay1us(5);
 
-	#ifdef IC_CARD_DEBUG
+	#ifdef SLE4442_DEBUG
 		/*for(uint8_t i = 0;i < sizeof(temp);i ++)
 		{
 			printf("0x%02x, ",temp[i]);
@@ -342,7 +342,7 @@ void SLE4442_Reset(void)
 ************************************************************************/
 void SLE4442_ReadMode(uint8_t * pt,uint8_t count)
 {
-	#ifdef IC_CARD_DEBUG
+	#ifdef SLE4442_DEBUG
 		printf("\r\n[IC] SLE4442_ReadMode...\r\n");
 	#endif
 
@@ -363,7 +363,7 @@ void SLE4442_ProcessMode(void)
 {
     uint8_t i;
 
-	#ifdef IC_CARD_DEBUG
+	#ifdef SLE4442_DEBUG
 		printf("\r\n[IC] SLE4442_ProcessMode...\r\n");
 	#endif
 	
@@ -407,7 +407,7 @@ uint8_t SLE4442_Verify(uint8_t *pt)
 	uint8_t temp[4];                				//暂存4字节的保密区内容
 	uint8_t i;
 
-	#ifdef IC_CARD_DEBUG
+	#ifdef SLE4442_DEBUG
 		 printf("\r\n[IC] SLE4442_Verify...\r\n");
 	#endif
 	
@@ -415,7 +415,7 @@ uint8_t SLE4442_Verify(uint8_t *pt)
 	SLE4442_CommWrite(RSM_COMM,0xff,0xff);        	//读密码存储区的命令字,第2,3个参数在此命令中被忽略
 	SLE4442_ReadMode(temp, 4);                   	//读出
 
-	#ifdef IC_CARD_DEBUG
+	#ifdef SLE4442_DEBUG
 		for(i = 0;i < 4;i ++)
 		{
 			printf("0x%02x, ",temp[i]);

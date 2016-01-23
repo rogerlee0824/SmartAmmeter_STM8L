@@ -480,8 +480,8 @@ void LCD_SC_DisplayRemainGas(void)
 void lcd_event_handler(void * p_event_data, uint16_t event_size)
 {
 	lcd_event_t * lcd_event_tmp = p_event_data;
-	uint8_t temp[6] = {8,8,8,8,5,6};
-	uint32_t u32temp = 654321;
+	uint8_t temp[6] = {0};
+	//uint32_t u32temp = 654321;
 	
 	switch(lcd_event_tmp->eLcd_event)
 	{
@@ -489,6 +489,7 @@ void lcd_event_handler(void * p_event_data, uint16_t event_size)
 			#ifdef LCD_DEBUG
 				printf("LCD_INIT ...\r\n");
 			#endif
+			
 			LCD_SC_Init_A();
 			LCD_SC_DeInit();
             break;
@@ -497,6 +498,7 @@ void lcd_event_handler(void * p_event_data, uint16_t event_size)
 			#ifdef LCD_DEBUG
 				printf("lCD_HANDLE ...\r\n");
 			#endif
+			
 			if(!lcd_is_on)
 			{
 				LCD_SC_Init();

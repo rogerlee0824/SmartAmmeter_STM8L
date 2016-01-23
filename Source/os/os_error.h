@@ -56,7 +56,7 @@
  * @param[in] line_num    Line number where the handler is called.
  * @param[in] p_file_name Pointer to the file name. 
  */
-void app_error_handler(uint32_t error_code, uint32_t line_num, const uint8_t * p_file_name);
+void app_error_handler(uint16_t error_code, uint16_t line_num, const uint8_t * p_file_name);
 
 /**@brief Macro for calling error handler function. 
  * @param[in] ERR_CODE Error code supplied to the error handler.

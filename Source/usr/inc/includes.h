@@ -31,7 +31,8 @@
 #define COUNT_DEBUG
 //#define COUNT_TEST
 //#define VALVE_DEBUG
-#define IC_CARD_DEBUG
+//#define IC_CARD_DEBUG
+//#define SLE4442_DEBUG
 //#define CC112x_DEBUG
 //#define BEEPER_DEBUG
 //#define BATTERY_DEBUG
@@ -41,6 +42,8 @@
 
 #define STM8L_SUCCESS                           (0)  // Successful command
 #define STM8L_FAIL                           	(1)  // Fail command
+
+#define GAS_COEFFICIENT							(10)
 
 /* Define Trace pins -----------------------------------------------------------*/
 #define APP_TRACE_USART							USART3
@@ -210,6 +213,8 @@
 #define GPIO_PIN_AA_CTRL  						GPIO_Pin_7
 
 
+#define REMAIN_GAS_MIN							(GAS_COEFFICIENT * 5)	
+
 typedef union {
 	uint32_t l;
 	uint8_t arr[4];
@@ -232,7 +237,7 @@ typedef union {
 **********************************************************************************/
   #define usr_assert(expr) ((expr) ? (void)0 : usr_assert_failed((uint8_t *)__FILE__, __LINE__))
 /* Exported functions ------------------------------------------------------- */
-  void usr_assert_failed(uint8_t* file, uint32_t line);
+  void usr_assert_failed(uint8_t* file, uint16_t line);
 #else
   #define usr_assert(expr) ((void)0)
 #endif /* USR_ASSERT */

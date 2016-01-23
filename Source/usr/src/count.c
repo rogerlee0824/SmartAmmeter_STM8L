@@ -12,9 +12,6 @@ uint32_t ConvertBCD_to_HEX(uint8_t * pu8Array);
 
 void Count_Cnt_Init(void)
 {
-	uint32_t top = 0;
-	uint32_t real = 0;
-
 	if(DataMem_GetTopGas() > 999999)
 	{
 		DataMem_SetTopGas(0);
@@ -196,22 +193,23 @@ uint32_t ConvertBCD_to_HEX(uint8_t * pu8Array)
 ************************************************************************/
 static void CountMeter(void)
 {
+	uint32_t AmmeterCount_top = 0;
+	
 	#ifdef COUNT_DEBUG
 		printf("[COUNT] CountMeter...\r\n");
 	#endif
 	AmmeterCount = DataMem_GetRealGas();
 	AmmeterCount ++;
-	if(AmmeterCount >= 999999)//·­±í
+	if(AmmeterCount >= 999999)									//·­±í
 	{
 		AmmeterCount = 0;
+		AmmeterCount_top = DataMem_GetTopGas() - 999999;
+		DataMem_SetTopGas(AmmeterCount_top);
 	}
 	DataMem_SetRealGas(AmmeterCount);
-	ConvertHEX_to_BCD(AmmeterCount, u8BCDCount);
-	#ifdef COUNT_TEST
-		UpdataLCD(u8BCDCount);
-	#endif
 	
 	#ifdef COUNT_DEBUG
+		ConvertHEX_to_BCD(AmmeterCount, u8BCDCount);
 		printf("%02x %02x %02x %02x %02x\r\n",u8BCDCount[0],u8BCDCount[1],u8BCDCount[2],u8BCDCount[3],u8BCDCount[4]);
 	#endif
 }

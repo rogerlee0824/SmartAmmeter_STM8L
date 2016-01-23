@@ -8,20 +8,18 @@ uint8_t ic_default_manufacture[4] = {0xff, 0xff, 0x81, 0x15};
 
 void IC_Card_CheckData(void)
 {
-	#ifdef IC_CARD_DEBUG
-		uint8_t yemp[256];
+	uint8_t yemp[256];
 
-		SLE4442_ReadMainMem(0x00, yemp, sizeof(yemp));
-		for(uint16_t i = 0;i < sizeof(yemp);i ++)
+	SLE4442_ReadMainMem(0x00, yemp, sizeof(yemp));
+	for(uint16_t i = 0;i < sizeof(yemp);i ++)
+	{
+		printf("0x%02x, ",yemp[i]);
+		if(!((i + 1)%16))
 		{
-			printf("0x%02x, ",yemp[i]);
-			if(!((i + 1)%16))
-			{
-				printf("\r\n");
-			}
+			printf("\r\n");
 		}
-		printf("\r\n");
-	#endif
+	}
+	printf("\r\n");
 }
 
 static uint8_t IC_Card_CheckICManufactureInfo(void)
@@ -63,32 +61,36 @@ static void IC_Card_ClearGas(void)
 
 static uint32_t IC_Card_GetNewGas(void)
 {
-	uint8_t tmp_arr[4] = {0};
-	uint32_t l = 0;
+	uint32_t_or_u8_u tmp;
+	
+	#ifdef IC_CARD_DEBUG
+		printf("\r\n[IC] IC_Card_GetNewGas\r\n");
+	#endif
 
-	SLE4442_ReadMainMem(IC_CARD_GAS_START_ADDR, tmp_arr, sizeof(uint32_t));
-	if((tmp_arr[0] == 0xff) && 
-		(tmp_arr[1] == 0xff) &&
-		(tmp_arr[2] == 0xff) &&
-		(tmp_arr[3] == 0xff))
+	SLE4442_ReadMainMem(IC_CARD_GAS_START_ADDR, tmp.arr, sizeof(uint32_t));
+	ConvertU32Endian(&tmp.l);
+	
+	if((tmp.arr[0] == 0xff) && (tmp.arr[1] == 0xff) &&(tmp.arr[2] == 0xff) && (tmp.arr[3] == 0xff))
 	{
-		l = (uint32_t)tmp_arr[0] | ((uint32_t)tmp_arr[1] >> 8) | 
-			((uint32_t)tmp_arr[2] >> 16) | ((uint32_t)tmp_arr[3] >> 24);
+		return 0;
 	}
 	else
 	{
-		l = 0;
+		return (tmp.l);
 	}
 
-	return l;
 }
 
 static void IC_Card_AddNewGas(void)
 {
 	uint32_t rd_num_temp = 0;
 	uint32_t ic_new_gas = 0;
+
+	#ifdef IC_CARD_DEBUG
+		printf("\r\n[IC] IC_Card_AddNewGas\r\n");
+	#endif
 	
-	ic_new_gas = IC_Card_GetNewGas();
+	ic_new_gas = IC_Card_GetNewGas() * GAS_COEFFICIENT;
 	rd_num_temp = DataMem_GetTopGas();
 	rd_num_temp += ic_new_gas;
 	DataMem_SetTopGas(rd_num_temp);
@@ -139,18 +141,21 @@ void ic_event_handler(void * p_event_data, uint16_t event_size)
 				if(1 == check_state)
 				{
 					IC_Card_AddNewGas();
-					IC_Card_CheckData();
+					
+					#ifdef IC_CARD_DEBUG
+						IC_Card_CheckData();
+					#endif
 
 					lcd_event.eLcd_event = LCD_DISPLAY_REMAIN_GAS;
             		app_sched_event_put(&lcd_event,sizeof(lcd_event),lcd_event_handler);
 				}
 			}
+			#ifdef IC_CARD_DEBUG
 			else
 			{
-				#ifdef IC_CARD_DEBUG
-					printf("[IC] ***The IC Card is illegal***\r\n");
-				#endif
+				printf("[IC] ***The IC Card is illegal***\r\n");
 			}
+			#endif
 			
 			ic_card_event.eIC_event = IC_CARD_DEINIT;
             app_sched_event_put(&ic_card_event,sizeof(ic_event_t),ic_event_handler);
