@@ -132,6 +132,23 @@ INTERRUPT_HANDLER(EXTIE_F_PVD_IRQHandler,5)
     /* In order to detect unexpected events during development,
        it is recommended to set a breakpoint on the following instruction.
     */
+  if (PWR_PVDGetITStatus() != RESET)
+  {
+    PWR_PVDClearITPendingBit();
+    if (PWR_GetFlagStatus(PWR_FLAG_PVDOF) != RESET)
+    {
+    	/* Falling Direction Detected*/
+		PWR_PVDClearFlag();
+		pvd_event.emPVD_event = PVD_FALLING_EVENT;
+		app_sched_event_put(&pvd_event,sizeof(pvd_event),PVD_event_handler);
+    }
+    else
+    {
+    	/* Rising Direction Detected*/
+		pvd_event.emPVD_event = PVD_RISING_EVENT;
+		app_sched_event_put(&pvd_event,sizeof(pvd_event),PVD_event_handler);
+    }
+  }
 }
 
 /**

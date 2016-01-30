@@ -46,6 +46,7 @@
 
 /* Private functions ---------------------------------------------------------*/
 static void CLK_Config(void);
+static void PVD_Config(void);
 
 /**
   * @brief  Main program.
@@ -110,6 +111,8 @@ void main(void)
 	battery_event.eBattery_event = INT_BATTERY_EVENT;
 	app_sched_event_put(&battery_event,sizeof(battery_event),battery_event_handler);
 
+	
+
     // enable interrupts 
 	rim();
     LED1_OFF();
@@ -139,7 +142,8 @@ void IdleTask(void)
 	PWR_FastWakeUpCmd(ENABLE);
     halt();
 
-	#ifdef DEBUG
+	PVD_Config();
+	#ifdef DEBUG	
 		AppTrace_Init();
 		printf("Wakeup ...\r\n");
 	#endif
@@ -160,6 +164,25 @@ static void CLK_Config(void)
   	CLK_SYSCLKDivConfig(CLK_SYSCLKDiv_1);
   	while (CLK_GetSYSCLKSource() != CLK_SYSCLKSource_HSI)
   	{}
+}
+
+/***********************************************************************
+  * @brief		Configure PVD 
+  * @param	None
+  * @retval   None
+************************************************************************/
+static void PVD_Config(void)
+{
+  /* select PVD threshold*/
+  PWR_PVDLevelConfig(PWR_PVDLevel_2V85);
+
+  /*Enable PVD  : optional (PVD is by default enabled)*/
+  PWR_PVDCmd(ENABLE);
+
+  PWR_PVDClearFlag();
+
+  /*Enable PVD Interrupt*/
+  PWR_PVDITConfig(ENABLE);
 }
 
 #ifdef  USR_ASSERT

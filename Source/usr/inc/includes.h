@@ -21,6 +21,7 @@
 #include "battery.h"
 #include "flash.h"
 #include "dataConvert.h"
+#include "pvd.h"
 
 /* Define debug function -------------------------------------------------------*/
 #define DEBUG
@@ -37,6 +38,7 @@
 //#define BEEPER_DEBUG
 //#define BATTERY_DEBUG
 //#define DATAMEM_DEBUG
+#define PVD_DEBUG
 #endif
 
 
