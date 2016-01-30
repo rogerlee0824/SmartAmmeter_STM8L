@@ -22,6 +22,7 @@ void Count_Cnt_Init(void)
 		DataMem_SetRealGas(0);
 	}
 }
+
 /***********************************************************************
   * @brief  Initialise the resource for count.
   * @param  None
@@ -36,19 +37,18 @@ void count_init(void)
 	// Disable interrupts 
 	disableInterrupts();
 	
-	GPIO_Init(GPIO_PORT_COUNT_VCC, GPIO_PIN_COUNT_VCC, GPIO_Mode_Out_PP_High_Fast);
+	//GPIO_Init(GPIO_PORT_COUNT_VCC, GPIO_PIN_COUNT_VCC, GPIO_Mode_Out_PP_Low_Fast);
 
-	GPIO_Init(GPIO_PORT_COUNT_A, GPIO_PIN_COUNT_A, GPIO_Mode_In_FL_IT);
+	GPIO_Init(GPIO_PORT_COUNT_A, GPIO_PIN_COUNT_A, GPIO_Mode_In_PU_IT);
     EXTI_SetPinSensitivity(EXTI_PIN_COUNT_A, EXTI_Trigger_COUNT_A);
 	
-	GPIO_Init(GPIO_PORT_COUNT_B, GPIO_PIN_COUNT_B, GPIO_Mode_In_FL_IT);
+	GPIO_Init(GPIO_PORT_COUNT_B, GPIO_PIN_COUNT_B, GPIO_Mode_In_PU_IT);
     EXTI_SetPinSensitivity(EXTI_PIN_COUNT_B, EXTI_Trigger_COUNT_B);
 
 	EXTI_ClearITPendingBit(EXTI_IT_PIN_COUNT_A);
 	EXTI_ClearITPendingBit(EXTI_IT_PIN_COUNT_B);
 
 	Count_Cnt_Init();
-	
 	
 	// Enable interrupts 
 	enableInterrupts();
@@ -70,14 +70,14 @@ void count_init_AorB(uint8_t temp)
 
 	if(temp)
 	{	
-		GPIO_Init(GPIO_PORT_COUNT_B, GPIO_PIN_COUNT_B, GPIO_Mode_Out_PP_High_Fast);
-		GPIO_Init(GPIO_PORT_COUNT_A, GPIO_PIN_COUNT_A, GPIO_Mode_In_FL_IT);
+		GPIO_Init(GPIO_PORT_COUNT_B, GPIO_PIN_COUNT_B, GPIO_Mode_Out_PP_Low_Fast);
+		GPIO_Init(GPIO_PORT_COUNT_A, GPIO_PIN_COUNT_A, GPIO_Mode_In_PU_IT);
     	EXTI_SetPinSensitivity(EXTI_PIN_COUNT_A, EXTI_Trigger_COUNT_A);
 	}
 	else
 	{
-		GPIO_Init(GPIO_PORT_COUNT_A, GPIO_PIN_COUNT_A, GPIO_Mode_Out_PP_High_Fast);
-		GPIO_Init(GPIO_PORT_COUNT_B, GPIO_PIN_COUNT_B, GPIO_Mode_In_FL_IT);
+		GPIO_Init(GPIO_PORT_COUNT_A, GPIO_PIN_COUNT_A, GPIO_Mode_Out_PP_Low_Fast);
+		GPIO_Init(GPIO_PORT_COUNT_B, GPIO_PIN_COUNT_B, GPIO_Mode_In_PU_IT);
     	EXTI_SetPinSensitivity(EXTI_PIN_COUNT_B, EXTI_Trigger_COUNT_B);
 	}
 

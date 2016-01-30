@@ -71,13 +71,13 @@
 #define GPIO_PORT_COUNT_A  						GPIOA
 #define GPIO_PIN_COUNT_A  						GPIO_Pin_2
 #define EXTI_PIN_COUNT_A 						EXTI_Pin_2
-#define EXTI_Trigger_COUNT_A 					EXTI_Trigger_Rising
+#define EXTI_Trigger_COUNT_A 					EXTI_Trigger_Falling
 #define EXTI_IT_PIN_COUNT_A						EXTI_IT_Pin2
 
 #define GPIO_PORT_COUNT_B  						GPIOA
 #define GPIO_PIN_COUNT_B  						GPIO_Pin_3
 #define EXTI_PIN_COUNT_B 						EXTI_Pin_3
-#define EXTI_Trigger_COUNT_B 					EXTI_Trigger_Rising
+#define EXTI_Trigger_COUNT_B 					EXTI_Trigger_Falling
 #define EXTI_IT_PIN_COUNT_B						EXTI_IT_Pin3
 
 /* Define MOTOR pins ------------------------------------------------------------*/
