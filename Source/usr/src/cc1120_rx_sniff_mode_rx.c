@@ -244,14 +244,14 @@ void registerConfig(void)
         delay1us(1000);
     }
 
-    /*#ifdef CC112x_DEBUG
+    #ifdef CC112x_DEBUG
        printf("[CC112X] registerConfig,OK...\r\n");  
 		for(i = 0;i < (sizeof(preferredSettings)/sizeof(registerSetting_t)); i++) 
 		{
 			cc112xSpiReadReg(preferredSettings[i].addr, &readByte, 1);
 			printf("[CC112X] i = %d : 0x%02x \r\n",i,readByte); 
 		}
-    #endif	*/
+    #endif	
 
 	// Calibrate radio according to errata
     manualCalibration();

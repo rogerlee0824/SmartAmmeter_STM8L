@@ -145,6 +145,7 @@ INTERRUPT_HANDLER(EXTIE_F_PVD_IRQHandler,5)
     else
     {
     	/* Rising Direction Detected*/
+		PWR_PVDClearFlag();
 		pvd_event.emPVD_event = PVD_RISING_EVENT;
 		app_sched_event_put(&pvd_event,sizeof(pvd_event),PVD_event_handler);
     }
@@ -205,8 +206,8 @@ INTERRUPT_HANDLER(EXTI1_IRQHandler,9)
 {
     if(EXTI_GetITStatus(EXTI_IT_PIN_KEY))
     {
-        /* Cleat Interrupt pending bit */
-  		EXTI_ClearITPendingBit(EXTI_IT_PIN_KEY);
+		/* Cleat Interrupt pending bit */
+  		EXTI_ClearITPendingBit(EXTI_IT_Pin1);
         
         /* Check if the key is pressed or not */
         if(GPIO_ReadInputDataBit(GPIO_PORT_KEY, GPIO_PIN_KEY) == RESET)
@@ -221,6 +222,15 @@ INTERRUPT_HANDLER(EXTI1_IRQHandler,9)
             	key_event.eKey_event = KEY_HANDLE;
             	app_sched_event_put(&key_event,sizeof(key_event),key_event_handler);
         	}
+        }
+
+		 /* Check if the GPIO2 is interrupt or not */
+        if(GPIO_ReadInputDataBit(GPIO_PORT_CC112X_GPIO2, GPIO_PIN_CC112X_GPIO2) == RESET)
+        {
+            #ifdef KEY_DEBUG
+				AppTrace_Init();
+                printf("GPIO2_IRQHandler!!!\r\n");
+            #endif
         }
     }
 }
@@ -443,6 +453,16 @@ INTERRUPT_HANDLER(TIM1_CC_IRQHandler,24)
     /* In order to detect unexpected events during development,
        it is recommended to set a breakpoint on the following instruction.
     */
+
+  /* Clear TIM1 Capture compare interrupt pending bit */
+  TIM1_ClearITPendingBit(TIM1_IT_CC3);
+
+  /* Get the Input Capture value by reading CCR1 register */
+  /* CCR1 regsiter contains signal frequency value */
+  IC1Value = TIM1_GetCapture3();
+
+  	timer1_event.emTimer1_event = TIMER1_CAPTURE_END;
+	app_sched_event_put(&timer1_event,sizeof(timer1_event),timer1_event_handler);
 }
 
 /**

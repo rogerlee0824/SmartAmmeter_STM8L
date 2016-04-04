@@ -111,7 +111,9 @@ void main(void)
 	battery_event.eBattery_event = INT_BATTERY_EVENT;
 	app_sched_event_put(&battery_event,sizeof(battery_event),battery_event_handler);
 
-	
+	// Build the IC card Init event 
+	//timer1_event.emTimer1_event = TIMER1_INIT;
+	//app_sched_event_put(&timer1_event,sizeof(timer1_event),timer1_event_handler);
 
     // enable interrupts 
 	rim();
@@ -137,16 +139,24 @@ void IdleTask(void)
 		AppTrace_DeInit();
 	#endif
 
-	PWR_UltraLowPowerCmd(ENABLE);
-	CLK_HaltConfig(CLK_Halt_FastWakeup, ENABLE);
-	PWR_FastWakeUpCmd(ENABLE);
-    halt();
+	//if(1 != channel3_capture_running)
+	{
+		PWR_UltraLowPowerCmd(ENABLE);
+		CLK_HaltConfig(CLK_Halt_FastWakeup, ENABLE);
+		PWR_FastWakeUpCmd(ENABLE);
+    	halt();
 
-	PVD_Config();
-	#ifdef DEBUG	
-		AppTrace_Init();
-		printf("Wakeup ...\r\n");
-	#endif
+		CLK_SYSCLKSourceConfig(CLK_SYSCLKSource_HSI);
+		CLK_SYSCLKDivConfig(CLK_SYSCLKDiv_1);
+  		while (CLK_GetSYSCLKSource() != CLK_SYSCLKSource_HSI)
+  		{}
+		PVD_Config();
+		
+		#ifdef DEBUG	
+			AppTrace_Init();
+			printf("Wakeup ...\r\n");
+		#endif
+	}
 }
 
 /***********************************************************************

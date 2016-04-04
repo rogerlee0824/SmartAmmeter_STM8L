@@ -22,6 +22,8 @@
 #include "flash.h"
 #include "dataConvert.h"
 #include "pvd.h"
+#include "timer1.h"
+
 
 /* Define debug function -------------------------------------------------------*/
 #define DEBUG
@@ -34,11 +36,12 @@
 //#define VALVE_DEBUG
 //#define IC_CARD_DEBUG
 //#define SLE4442_DEBUG
-//#define CC112x_DEBUG
+#define CC112x_DEBUG
 //#define BEEPER_DEBUG
 //#define BATTERY_DEBUG
 //#define DATAMEM_DEBUG
 #define PVD_DEBUG
+#define TIMER1_DEBUG
 #endif
 
 
@@ -87,8 +90,8 @@
 #define GPIO_PIN_VALVE_IA  						GPIO_Pin_3
 #define GPIO_PORT_VALVE_IB  					GPIOG
 #define GPIO_PIN_VALVE_IB  						GPIO_Pin_2
-#define GPIO_PORT_VALVE_MONITOR  				GPIOD
-#define GPIO_PIN_VALVE_MONITOR  				GPIO_Pin_5
+#define GPIO_PORT_VALVE_MONITOR  				GPIOF
+#define GPIO_PIN_VALVE_MONITOR  				GPIO_Pin_1
 
 /* Define CC112x  pins ------------------------------------------------------------*/
 #define APP_CC112X_SPI							SPI1
@@ -107,8 +110,8 @@
 #define GPIO_PIN_CC112X_RE  					GPIO_Pin_7
 #define GPIO_PORT_CC112X_RESET  				GPIOF
 #define GPIO_PIN_CC112X_RESET  					GPIO_Pin_5
-#define GPIO_PORT_CC112X_GPIO2  				GPIOF
-#define GPIO_PIN_CC112X_GPIO2   				GPIO_Pin_1
+#define GPIO_PORT_CC112X_GPIO2  				GPIOD
+#define GPIO_PIN_CC112X_GPIO2   				GPIO_Pin_5
 #define GPIO_PORT_CC112X_GPIO3   				GPIOF
 #define GPIO_PIN_CC112X_GPIO3   				GPIO_Pin_4
 #define GPIO_PORT_CC112X_GPIO0  				GPIOF
@@ -117,6 +120,16 @@
 #define EXTI_PIN_CC112X_GPIO0 					EXTI_Pin_0
 #define EXTI_Trigger_CC112X_GPIO0 				EXTI_Trigger_Falling
 #define EXTI_IT_PIN_CC112X_GPIO0				EXTI_IT_Pin0
+
+#define EXTI_PIN_CC112X_GPIO2 					EXTI_Pin_1
+#define EXTI_Trigger_CC112X_GPIO2 				EXTI_Trigger_Falling
+#define EXTI_IT_PIN_CC112X_GPIO2				EXTI_IT_Pin1
+
+#define EXTI_PIN_CC112X_GPIO3 					EXTI_Pin_4
+#define EXTI_Trigger_CC112X_GPIO3 				EXTI_Trigger_Falling
+#define EXTI_IT_PIN_CC112X_GPIO3				EXTI_IT_Pin4
+
+
 
 
 /* Define LCD pins ------------------------------------------------------------*/

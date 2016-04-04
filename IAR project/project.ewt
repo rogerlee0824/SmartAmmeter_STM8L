@@ -168,6 +168,9 @@
       <name>$PROJ_DIR$\..\Source\usr\src\stm8l15x_it.c</name>
     </file>
     <file>
+      <name>$PROJ_DIR$\..\Source\usr\src\timer1.c</name>
+    </file>
+    <file>
       <name>$PROJ_DIR$\..\Source\usr\src\valve.c</name>
     </file>
   </group>

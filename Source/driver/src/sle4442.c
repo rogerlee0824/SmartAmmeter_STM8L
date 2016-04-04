@@ -45,7 +45,6 @@ void SLE4442_Init(void)
 	
 	/* Enable interrupts */
 	enableInterrupts();
-	
 #endif
 }
 

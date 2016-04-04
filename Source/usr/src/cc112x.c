@@ -9,7 +9,7 @@ void cc112x_init(void)
     #ifdef CC112x_DEBUG
 	    printf("[CC112X] cc112x_init...\r\n");   
 	#endif
-#if 0
+#if 1
 	// Disable interrupts 
 	disableInterrupts();
 	
@@ -23,10 +23,14 @@ void cc112x_init(void)
 
 	GPIO_Init(GPIO_PORT_CC112X_GPIO0, GPIO_PIN_CC112X_GPIO0, GPIO_Mode_In_FL_IT);
     EXTI_SetPinSensitivity(EXTI_PIN_CC112X_GPIO0, EXTI_Trigger_CC112X_GPIO0);
+
+	//GPIO_Init(GPIO_PORT_CC112X_GPIO2, GPIO_PIN_CC112X_GPIO2, GPIO_Mode_In_FL_IT);
+    //EXTI_SetPinSensitivity(EXTI_PIN_CC112X_GPIO2, EXTI_Trigger_CC112X_GPIO2);
 	
 	// Enable interrupts 
 	enableInterrupts();
 	EXTI_ClearITPendingBit(EXTI_IT_PIN_CC112X_GPIO0);
+	//EXTI_ClearITPendingBit(EXTI_IT_PIN_CC112X_GPIO2);
 #else	
 
 	GPIO_Init(GPIO_PORT_CC112X_TE, GPIO_PIN_CC112X_TE, GPIO_Mode_Out_PP_Low_Fast);
@@ -64,7 +68,7 @@ void cc112x_event_handler(void * p_event_data, uint16_t event_size)
 			#endif
 
 			cc112x_init();
-			/*GPIO_ResetBits(GPIO_PORT_CC112X_RESET, GPIO_PIN_CC112X_RESET);
+			GPIO_ResetBits(GPIO_PORT_CC112X_RESET, GPIO_PIN_CC112X_RESET);
 			delay1ms(1);
 			GPIO_SetBits(GPIO_PORT_CC112X_RESET, GPIO_PIN_CC112X_RESET);
 
@@ -79,7 +83,7 @@ void cc112x_event_handler(void * p_event_data, uint16_t event_size)
 			#endif
 			
 			SPI_DeInit(APP_CC112X_SPI);
-			GPIO_DeInit(GPIO_PORT_CC112X_SPI_NSS);*/
+			GPIO_DeInit(GPIO_PORT_CC112X_SPI_NSS);
             break;
             
         case CC112X_TRANSMIT_EVENT:
